@@ -1,0 +1,20 @@
+{
+  "name": "spryker-eco/inxmail",
+  "description": "Inxmail Module",
+  "require": {
+    "php": ">=7.1"
+  },
+  "autoload": {
+    "psr-0": {
+      "SprykerEco": "src/",
+      "Function": "tests/"
+    }
+  },
+  "minimum-stability": "dev",
+  "autoload-dev": {
+    "psr-0": {
+      "Functional": "tests/",
+      "Unit": "tests/"
+    }
+  }
+}
