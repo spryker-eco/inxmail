@@ -1,0 +1,12 @@
+<?php
+
+namespace SprykerEco\Zed\Inxmail\Persistence;
+
+use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
+
+/**
+ * @method \SprykerEco\Zed\Inxmail\Persistence\InxmailPersistenceFactory getFactory()
+ */
+class InxmailQueryContainer extends AbstractQueryContainer implements InxmailQueryContainerInterface
+{
+}
