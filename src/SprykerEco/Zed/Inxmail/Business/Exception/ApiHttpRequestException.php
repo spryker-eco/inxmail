@@ -5,11 +5,10 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\Inxmail\Business;
+namespace SprykerEco\Zed\Inxmail\Business\Exception;
 
-interface InxmailFacadeInterface
+use Exception;
+
+class ApiHttpRequestException extends Exception
 {
-
-    //TODO Add methods
-
 }
