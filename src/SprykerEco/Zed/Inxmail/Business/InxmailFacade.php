@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Inxmail\Business;
 
+use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -14,7 +15,9 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
  */
 class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
 {
-
-    //TODO Implement InxmailFacadeInterface
-
+    public function sendEventApiRequest(InxmailRequestTransfer $inxmailRequestTransfer): string
+    {
+        return $this->getFactory()->createEventAdapter()
+            ->sendRequest($inxmailRequestTransfer);
+    }
 }

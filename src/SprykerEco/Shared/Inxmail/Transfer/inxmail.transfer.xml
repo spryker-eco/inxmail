@@ -7,12 +7,16 @@
         <property name="eventType" type="string" />
         <property name="event" type="string" />
         <property name="transactionId" type="string" />
+        <property name="payload" type="InxmailPayload" />
+    </transfer>
+
+    <transfer name="InxmailPayload">
         <property name="customerRegistration" type="InxmailCustomerRegistrationPayload" />
         <property name="customerResetPassword" type="InxmailCustomerPasswordResetPayload" />
         <property name="newOrder" type="InxmailNewOrderPayload" />
-        <property name="item" type="InxmailShippingConfirmationPayload" />
-        <property name="item" type="InxmailCanceledOrderPayload" />
-        <property name="item" type="InxmailPaymentIsNotReceivedPayload" />
+        <property name="shippingConfirmation" type="InxmailShippingConfirmationPayload" />
+        <property name="canceledOrder" type="InxmailCanceledOrderPayload" />
+        <property name="paymentIsNotReceived" type="InxmailPaymentIsNotReceivedPayload" />
     </transfer>
 
     <transfer name="InxmailCustomerRegistrationPayload">

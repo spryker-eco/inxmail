@@ -7,12 +7,14 @@
 
 namespace SprykerEco\Zed\Inxmail\Business\Api\Adapter;
 
+use Generated\Shared\Transfer\InxmailRequestTransfer;
+
 interface AdapterInterface
 {
     /**
-     * @param string $data
+     * @param \Generated\Shared\Transfer\InxmailRequestTransfer $transfer
      *
      * @return string
      */
-    public function sendRequest($data);
+    public function sendRequest(InxmailRequestTransfer $transfer);
 }

@@ -11,4 +11,5 @@ interface InxmailConstants
 {
     public const KEY_ID = 'INXMAIL:KEY_ID';
     public const SECRET = 'INXMAIL:SECRET';
+    public const SPACE_ID = 'INXMAIL:SPACE_ID';
 }

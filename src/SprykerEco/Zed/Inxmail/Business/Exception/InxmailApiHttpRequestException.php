@@ -9,6 +9,6 @@ namespace SprykerEco\Zed\Inxmail\Business\Exception;
 
 use Exception;
 
-class ApiHttpRequestException extends Exception
+class InxmailApiHttpRequestException extends Exception
 {
 }

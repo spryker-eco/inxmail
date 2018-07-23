@@ -31,6 +31,14 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @return string
+     */
+    public function getSpaceId(): string
+    {
+        return $this->get(InxmailConstants::SPACE_ID);
+    }
+
+    /**
      * @return array
      */
     public function getHeaders(): array

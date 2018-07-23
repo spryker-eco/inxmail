@@ -8,6 +8,8 @@
 namespace SprykerEco\Zed\Inxmail\Business;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
+use SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter;
 
 /**
  * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
@@ -15,7 +17,11 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
  */
 class InxmailBusinessFactory extends AbstractBusinessFactory
 {
-
-    //TODO Add factory methods
-
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface
+     */
+    public function createEventAdapter(): AdapterInterface
+    {
+        return new EventAdapter();
+    }
 }
