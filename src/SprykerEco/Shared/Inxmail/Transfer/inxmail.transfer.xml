@@ -4,19 +4,9 @@
            xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/transfer-01.xsd">
 
     <transfer name="InxmailRequest">
-        <property name="eventType" type="string" />
         <property name="event" type="string" />
         <property name="transactionId" type="string" />
-        <property name="payload" type="InxmailPayload" />
-    </transfer>
-
-    <transfer name="InxmailPayload">
-        <property name="customerRegistration" type="InxmailCustomerRegistrationPayload" />
-        <property name="customerResetPassword" type="InxmailCustomerPasswordResetPayload" />
-        <property name="newOrder" type="InxmailNewOrderPayload" />
-        <property name="shippingConfirmation" type="InxmailShippingConfirmationPayload" />
-        <property name="canceledOrder" type="InxmailCanceledOrderPayload" />
-        <property name="paymentIsNotReceived" type="InxmailPaymentIsNotReceivedPayload" />
+        <property name="payload" type="array" />
     </transfer>
 
     <transfer name="InxmailCustomerRegistrationPayload">

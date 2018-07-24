@@ -13,6 +13,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\StreamInterface;
 use SprykerEco\Zed\Inxmail\Business\Exception\InxmailApiHttpRequestException;
+use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
@@ -24,16 +25,24 @@ abstract class AbstractAdapter implements AdapterInterface
     protected $client;
 
     /**
+     * @var InxmailConfig
+     */
+    protected $config;
+
+    /**
+     * @param string $spaceId
+     *
      * @return string
      */
-    abstract protected function getUrl();
+    abstract protected function getUrl(string $spaceId): string;
 
-    abstract protected function prepareData();
-
-    public function __construct()
+    public function __construct(InxmailConfig $config)
     {
+        $this->config = $config;
         $this->client = new Client([
             RequestOptions::TIMEOUT => static::DEFAULT_TIMEOUT,
+            RequestOptions::HEADERS => ['Content-Type' => 'application/json'],
+            RequestOptions::AUTH => [$this->config->getInxmailKeyId(), $this->config->getInxmailSecret()]
         ]);
     }
 
@@ -44,10 +53,7 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     public function sendRequest(InxmailRequestTransfer $transfer)
     {
-        $this->prepareData();
-
-        $options[RequestOptions::FORM_PARAMS] = $transfer->toArray();
-        //TODO: ADD AUTH PARAMS FROM CONFIG
+        $options[RequestOptions::BODY] = json_encode($transfer->toArray());
 
         return $this->send($options);
     }
@@ -62,8 +68,9 @@ abstract class AbstractAdapter implements AdapterInterface
     protected function send(array $options = []): StreamInterface
     {
         try {
-            $response = $this->client->post(
-                $this->getUrl(),
+            $response = $this->client->request(
+                'POST',
+                $this->getUrl($this->config->getInxmailSpaceId()),
                 $options
             );
         } catch (RequestException $requestException) {

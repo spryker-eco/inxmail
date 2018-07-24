@@ -17,7 +17,7 @@ class InxmailConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getKeyId(): string
+    public function getInxmailKeyId(): string
     {
         return $this->get(InxmailConstants::KEY_ID);
     }
@@ -25,7 +25,7 @@ class InxmailConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getSecret(): string
+    public function getInxmailSecret(): string
     {
         return $this->get(InxmailConstants::SECRET);
     }
@@ -33,7 +33,7 @@ class InxmailConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getSpaceId(): string
+    public function getInxmailSpaceId(): string
     {
         return $this->get(InxmailConstants::SPACE_ID);
     }

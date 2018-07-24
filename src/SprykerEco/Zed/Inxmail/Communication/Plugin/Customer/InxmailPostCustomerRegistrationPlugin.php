@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerEco\Zed\Inxmail\Communication\Plugin\Customer;
 
 use Generated\Shared\Transfer\CustomerTransfer;
@@ -16,6 +21,6 @@ class InxmailPostCustomerRegistrationPlugin extends AbstractPlugin implements Po
      */
     public function execute(CustomerTransfer $customerTransfer): void
     {
-        
+        $this->getFacade()->sendCustomerRegistrationEvent($customerTransfer);
     }
 }

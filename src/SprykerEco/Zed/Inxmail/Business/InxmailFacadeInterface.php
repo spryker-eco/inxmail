@@ -7,14 +7,14 @@
 
 namespace SprykerEco\Zed\Inxmail\Business;
 
-use Generated\Shared\Transfer\InxmailRequestTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 
 interface InxmailFacadeInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\InxmailRequestTransfer $inxmailRequestTransfer
+     * @param CustomerTransfer $customerTransfer
      *
      * @return string
      */
-    public function sendEventApiRequest(InxmailRequestTransfer $inxmailRequestTransfer): string;
+    public function sendCustomerRegistrationEvent(CustomerTransfer $customerTransfer): string;
 }

@@ -10,6 +10,8 @@ namespace SprykerEco\Zed\Inxmail\Business;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter;
+use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerRegistrationMapper;
+use SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface;
 
 /**
  * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
@@ -22,6 +24,14 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createEventAdapter(): AdapterInterface
     {
-        return new EventAdapter();
+        return new EventAdapter($this->getConfig());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface
+     */
+    public function createCustomerRegistrationMapper(): MapperInterface
+    {
+        return new CustomerRegistrationMapper();
     }
 }
