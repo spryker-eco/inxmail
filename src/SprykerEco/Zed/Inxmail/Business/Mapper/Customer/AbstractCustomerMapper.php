@@ -15,6 +15,16 @@ use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractCustomerMapper implements MapperInterface
 {
+    /**
+     * @var InxmailConfig
+     */
+    protected $config;
+
+    public function __construct(InxmailConfig $config)
+    {
+        $this->config = $config;
+    }
+
     abstract protected function setTransferDependency(InxmailCustomerTransfer $customerTransfer): InxmailRequestTransfer;
 
     public function map(CustomerTransfer $customerTransfer): InxmailRequestTransfer

@@ -11,6 +11,7 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerRegistrationMapper;
+use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerResetPasswordMapper;
 use SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface;
 
 /**
@@ -32,6 +33,14 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createCustomerRegistrationMapper(): MapperInterface
     {
-        return new CustomerRegistrationMapper();
+        return new CustomerRegistrationMapper($this->getConfig());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface
+     */
+    public function createCustomerResetPasswordMapper(): MapperInterface
+    {
+        return new CustomerResetPasswordMapper($this->getConfig());
     }
 }

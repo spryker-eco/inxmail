@@ -7,19 +7,19 @@
 
 namespace SprykerEco\Zed\Inxmail\Business\Mapper\Customer;
 
-use Generated\Shared\Transfer\InxmailCustomerRegistrationPayloadTransfer;
+use Generated\Shared\Transfer\InxmailCustomerPasswordResetPayloadTransfer;
 use Generated\Shared\Transfer\InxmailCustomerTransfer;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
 
-class CustomerRegistrationMapper extends AbstractCustomerMapper
+class CustomerResetPasswordMapper extends AbstractCustomerMapper
 {
     protected function setTransferDependency(InxmailCustomerTransfer $inxmailCustomerTransfer): InxmailRequestTransfer
     {
         $inxmailRequestTransfer = new InxmailRequestTransfer();
-        $inxmailCustomerRegistrationTransfer = new InxmailCustomerRegistrationPayloadTransfer();
+        $inxmailCustomerRegistrationTransfer = new InxmailCustomerPasswordResetPayloadTransfer();
         $inxmailCustomerRegistrationTransfer->setCustomer($inxmailCustomerTransfer);
 
-        $inxmailRequestTransfer->setEvent($this->config->getInxmailEventCustomerRegistration());
+        $inxmailRequestTransfer->setEvent($this->config->getInxmailEventCustomerResetPassword());
         $inxmailRequestTransfer->setTransactionId(uniqid());
         $inxmailRequestTransfer->setPayload($inxmailCustomerRegistrationTransfer->toArray());
 

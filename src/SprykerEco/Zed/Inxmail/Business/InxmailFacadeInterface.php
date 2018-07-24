@@ -17,4 +17,11 @@ interface InxmailFacadeInterface
      * @return string
      */
     public function sendCustomerRegistrationEvent(CustomerTransfer $customerTransfer): string;
+
+    /**
+     * @param CustomerTransfer $customerTransfer
+     *
+     * @return string
+     */
+    public function sendCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): string;
 }

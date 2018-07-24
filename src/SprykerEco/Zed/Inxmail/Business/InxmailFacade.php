@@ -28,4 +28,18 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
         return $this->getFactory()->createEventAdapter()
             ->sendRequest($inxmailRequestTransfer);
     }
+
+    /**
+     * @param CustomerTransfer $customerTransfer
+     *
+     * @return string
+     */
+    public function sendCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): string
+    {
+        $inxmailRequestTransfer = $this->getFactory()->createCustomerResetPasswordMapper()
+            ->map($customerTransfer);
+
+        return $this->getFactory()->createEventAdapter()
+            ->sendRequest($inxmailRequestTransfer);
+    }
 }

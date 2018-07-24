@@ -12,8 +12,6 @@ use SprykerEco\Shared\Inxmail\InxmailConstants;
 
 class InxmailConfig extends AbstractBundleConfig
 {
-    protected const INXMAIL_HEADERS = [];
-
     /**
      * @return string
      */
@@ -39,10 +37,50 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getHeaders(): array
+    public function getInxmailEventCustomerRegistration(): string
     {
-        return static::INXMAIL_HEADERS;
+        return $this->get(InxmailConstants::EVENT_CUSTOMER_REGISTRATION);
+    }
+
+    /**
+     * @return string
+     */
+    public function getInxmailEventCustomerResetPassword(): string
+    {
+        return $this->get(InxmailConstants::EVENT_CUSTOMER_RESET_PASSWORD);
+    }
+
+    /**
+     * @return string
+     */
+    public function getInxmailEventOrderNew(): string
+    {
+        return $this->get(InxmailConstants::EVENT_ORDER_NEW);
+    }
+
+    /**
+     * @return string
+     */
+    public function getInxmailEventOrderShippingConfirmation(): string
+    {
+        return $this->get(InxmailConstants::EVENT_ORDER_SHIPPING_CONFIRMATION);
+    }
+
+    /**
+     * @return string
+     */
+    public function getInxmailEventOrderCanceled(): string
+    {
+        return $this->get(InxmailConstants::EVENT_ORDER_CANCELED);
+    }
+
+    /**
+     * @return string
+     */
+    public function getInxmailEventOrderPaymentIsNotReceived(): string
+    {
+        return $this->get(InxmailConstants::EVENT_ORDER_PAYMENT_IS_NOT_RECEIVED);
     }
 }
