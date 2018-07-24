@@ -16,7 +16,7 @@ interface InxmailFacadeInterface
      *
      * @return string
      */
-    public function sendCustomerRegistrationEvent(CustomerTransfer $customerTransfer): string;
+    public function handleCustomerRegistrationEvent(CustomerTransfer $customerTransfer): string;
 
     /**
      * @param CustomerTransfer $customerTransfer

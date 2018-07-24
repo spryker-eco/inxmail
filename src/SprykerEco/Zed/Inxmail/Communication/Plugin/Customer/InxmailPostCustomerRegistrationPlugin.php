@@ -21,6 +21,6 @@ class InxmailPostCustomerRegistrationPlugin extends AbstractPlugin implements Po
      */
     public function execute(CustomerTransfer $customerTransfer): void
     {
-        $this->getFacade()->sendCustomerRegistrationEvent($customerTransfer);
+        $this->getFacade()->handleCustomerRegistrationEvent($customerTransfer);
     }
 }

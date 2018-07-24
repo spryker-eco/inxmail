@@ -41,8 +41,6 @@ abstract class AbstractAdapter implements AdapterInterface
         $this->config = $config;
         $this->client = new Client([
             RequestOptions::TIMEOUT => static::DEFAULT_TIMEOUT,
-            RequestOptions::HEADERS => ['Content-Type' => 'application/json'],
-            RequestOptions::AUTH => [$this->config->getInxmailKeyId(), $this->config->getInxmailSecret()]
         ]);
     }
 
@@ -54,6 +52,8 @@ abstract class AbstractAdapter implements AdapterInterface
     public function sendRequest(InxmailRequestTransfer $transfer)
     {
         $options[RequestOptions::BODY] = json_encode($transfer->toArray());
+        $options[RequestOptions::HEADERS] = ['Content-Type' => 'application/json'];
+        $options[RequestOptions::AUTH] = [$this->config->getInxmailKeyId(), $this->config->getInxmailSecret()];
 
         return $this->send($options);
     }
@@ -68,8 +68,7 @@ abstract class AbstractAdapter implements AdapterInterface
     protected function send(array $options = []): StreamInterface
     {
         try {
-            $response = $this->client->request(
-                'POST',
+            $response = $this->client->post(
                 $this->getUrl($this->config->getInxmailSpaceId()),
                 $options
             );

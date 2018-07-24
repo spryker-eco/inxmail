@@ -8,37 +8,49 @@
 namespace SprykerEco\Zed\Inxmail\Business\Mapper\Customer;
 
 use Generated\Shared\Transfer\CustomerTransfer;
-use Generated\Shared\Transfer\InxmailCustomerTransfer;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
-use SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
-abstract class AbstractCustomerMapper implements MapperInterface
+abstract class AbstractCustomerMapper implements CustomerMapperInterface
 {
     /**
-     * @var InxmailConfig
+     * @var \SprykerEco\Zed\Inxmail\InxmailConfig
      */
     protected $config;
 
+    /**
+     * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
+     */
     public function __construct(InxmailConfig $config)
     {
         $this->config = $config;
     }
 
-    abstract protected function setTransferDependency(InxmailCustomerTransfer $customerTransfer): InxmailRequestTransfer;
-
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return \Generated\Shared\Transfer\InxmailRequestTransfer
+     */
     public function map(CustomerTransfer $customerTransfer): InxmailRequestTransfer
     {
-        $inxmailCustomerTransfer = new InxmailCustomerTransfer();
-        $inxmailCustomerTransfer->setFirstname($customerTransfer->getFirstName());
-        $inxmailCustomerTransfer->setId($customerTransfer->getIdCustomer());
-        $inxmailCustomerTransfer->setLanguage($customerTransfer->getLocale() ? $customerTransfer->getLocale()->getLocaleName() : null);
-        $inxmailCustomerTransfer->setLastname($customerTransfer->getLastName());
-        $inxmailCustomerTransfer->setLoginUrl('login url');
-        $inxmailCustomerTransfer->setMail($customerTransfer->getEmail());
-        $inxmailCustomerTransfer->setSalutation($customerTransfer->getSalutation());
-        $inxmailCustomerTransfer->setResetLink($customerTransfer->getRestorePasswordLink());
+        $inxmailRequestTransfer = new InxmailRequestTransfer();
+        $inxmailRequestTransfer->setEvent($this->getEvent());
+        $inxmailRequestTransfer->setTransactionId(uniqid()); //TODO: Ask ALEX about it
+        $inxmailRequestTransfer->setPayload($this->getPayload($customerTransfer));
 
-        return $this->setTransferDependency($inxmailCustomerTransfer);
+        return $inxmailRequestTransfer;
     }
+
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return array
+     */
+    abstract protected function getPayload(CustomerTransfer $customerTransfer): array;
+
+    /**
+     * @return string
+     */
+    abstract protected function getEvent(): string;
 }

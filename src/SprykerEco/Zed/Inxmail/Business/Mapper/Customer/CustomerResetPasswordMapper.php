@@ -7,22 +7,35 @@
 
 namespace SprykerEco\Zed\Inxmail\Business\Mapper\Customer;
 
-use Generated\Shared\Transfer\InxmailCustomerPasswordResetPayloadTransfer;
-use Generated\Shared\Transfer\InxmailCustomerTransfer;
-use Generated\Shared\Transfer\InxmailRequestTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 
 class CustomerResetPasswordMapper extends AbstractCustomerMapper
 {
-    protected function setTransferDependency(InxmailCustomerTransfer $inxmailCustomerTransfer): InxmailRequestTransfer
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return array
+     */
+    protected function getPayload(CustomerTransfer $customerTransfer): array
     {
-        $inxmailRequestTransfer = new InxmailRequestTransfer();
-        $inxmailCustomerRegistrationTransfer = new InxmailCustomerPasswordResetPayloadTransfer();
-        $inxmailCustomerRegistrationTransfer->setCustomer($inxmailCustomerTransfer);
+        return [
+            'Customer' => [
+                'Mail' => $customerTransfer->getEmail(),
+                'LoginUrl' => 'LOGIN_URL', //TODO: Ask alex about this one
+                'Salutation' => $customerTransfer->getSalutation(),
+                'Firstname' => $customerTransfer->getFirstName(),
+                'Lastname' => $customerTransfer->getLastName(),
+                'Id' => $customerTransfer->getIdCustomer(),
+                'Language' => $customerTransfer->getLocale() ? $customerTransfer->getLocale()->getLocaleName() : null,
+            ],
+        ];
+    }
 
-        $inxmailRequestTransfer->setEvent($this->config->getInxmailEventCustomerResetPassword());
-        $inxmailRequestTransfer->setTransactionId(uniqid());
-        $inxmailRequestTransfer->setPayload($inxmailCustomerRegistrationTransfer->toArray());
-
-        return $inxmailRequestTransfer;
+    /**
+     * @return string
+     */
+    protected function getEvent(): string
+    {
+        return $this->config->getInxmailEventCustomerRegistration();
     }
 }

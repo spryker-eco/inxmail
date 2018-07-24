@@ -10,9 +10,11 @@ namespace SprykerEco\Zed\Inxmail\Business;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter;
+use SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandler;
+use SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandlerInterface;
+use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerRegistrationMapper;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerResetPasswordMapper;
-use SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface;
 
 /**
  * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
@@ -20,6 +22,28 @@ use SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface;
  */
 class InxmailBusinessFactory extends AbstractBusinessFactory
 {
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandlerInterface
+     */
+    public function createCustomerRegistrationEventHandler(): CustomerEventHandlerInterface
+    {
+        return new CustomerEventHandler(
+            $this->createCustomerRegistrationMapper(),
+            $this->createEventAdapter()
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandlerInterface
+     */
+    public function createCustomerResetPasswordEventHandler(): CustomerEventHandlerInterface
+    {
+        return new CustomerEventHandler(
+            $this->createCustomerResetPasswordMapper(),
+            $this->createEventAdapter()
+        );
+    }
+
     /**
      * @return \SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface
      */
@@ -29,17 +53,17 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface
+     * @return \SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface
      */
-    public function createCustomerRegistrationMapper(): MapperInterface
+    public function createCustomerRegistrationMapper(): CustomerMapperInterface
     {
         return new CustomerRegistrationMapper($this->getConfig());
     }
 
     /**
-     * @return \SprykerEco\Zed\Inxmail\Business\Mapper\MapperInterface
+     * @return \SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface
      */
-    public function createCustomerResetPasswordMapper(): MapperInterface
+    public function createCustomerResetPasswordMapper(): CustomerMapperInterface
     {
         return new CustomerResetPasswordMapper($this->getConfig());
     }
