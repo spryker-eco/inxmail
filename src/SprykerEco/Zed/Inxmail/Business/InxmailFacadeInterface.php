@@ -8,20 +8,58 @@
 namespace SprykerEco\Zed\Inxmail\Business;
 
 use Generated\Shared\Transfer\CustomerTransfer;
+use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
 interface InxmailFacadeInterface
 {
     /**
-     * @param CustomerTransfer $customerTransfer
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return string
      */
     public function handleCustomerRegistrationEvent(CustomerTransfer $customerTransfer): string;
 
     /**
-     * @param CustomerTransfer $customerTransfer
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return string
      */
-    public function sendCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): string;
+    public function handleCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): string;
+
+    /**
+     * @param array $orderItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     *
+     * @return string
+     */
+    public function handleNewOrderEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
+
+    /**
+     * @param array $orderItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     *
+     * @return string
+     */
+    public function handleOrderCanceledEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
+
+    /**
+     * @param array $orderItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     *
+     * @return string
+     */
+    public function handlePaymentNotReceivedEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
+
+    /**
+     * @param array $orderItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     *
+     * @return string
+     */
+    public function handleShippingConfirmationPlugin(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
 }
