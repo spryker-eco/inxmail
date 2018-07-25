@@ -47,7 +47,20 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
      *
      * @return array
      */
-    abstract protected function getPayload(CustomerTransfer $customerTransfer): array;
+    protected function getPayload(CustomerTransfer $customerTransfer): array
+    {
+        return [
+            'Customer' => [
+                'Mail' => $customerTransfer->getEmail(),
+                'LoginUrl' => 'LOGIN_URL', //TODO: Ask alex about this one
+                'Salutation' => $customerTransfer->getSalutation(),
+                'Firstname' => $customerTransfer->getFirstName(),
+                'Lastname' => $customerTransfer->getLastName(),
+                'Id' => $customerTransfer->getIdCustomer(),
+                'Language' => $customerTransfer->getLocale() ? $customerTransfer->getLocale()->getLocaleName() : null,
+            ],
+        ];
+    }
 
     /**
      * @return string

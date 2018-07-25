@@ -16,7 +16,7 @@ class OrderEventHandler implements OrderEventHandlerInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerRegistrationMapper
+     * @var \SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface
      */
     protected $mapper;
 

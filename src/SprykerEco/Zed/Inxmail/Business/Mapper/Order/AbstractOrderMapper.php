@@ -52,7 +52,70 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      *
      * @return array
      */
-    abstract protected function getPayload(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array;
+    protected function getPayload(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array
+    {
+        $payload = [
+            'Customer' => [
+                'Mail' => 'aptah199494@gmail.com',
+                'Salutation' => 'Hello',
+                'Firstname' => 'Volodymyr',
+                'Lastname' => 'Hrychenko',
+                'Id' => 'id',
+                'Language' => 'En',
+            ],
+            'Billing' => [
+                'Salutation' =>  $orderEntity->getBillingAddress()->getSalutation(),
+                'Firstname' => $orderEntity->getBillingAddress()->getFirstName(),
+                'Lastname' => $orderEntity->getBillingAddress()->getLastName(),
+                'Company' => $orderEntity->getBillingAddress()->getCompany(),
+                'Address1' => $orderEntity->getBillingAddress()->getAddress1(),
+                'Address2' => $orderEntity->getBillingAddress()->getAddress2(),
+                'Address3' => $orderEntity->getBillingAddress()->getAddress3(),
+                'City' => $orderEntity->getBillingAddress()->getCity(),
+                'Zip' => $orderEntity->getBillingAddress()->getZipCode(),
+                'Country' => $orderEntity->getBillingAddress()->getCountry()->getName(),
+            ],
+            'Shipping' => [
+                'Salutation' =>  $orderEntity->getShippingAddress()->getSalutation(),
+                'Firstname' => $orderEntity->getShippingAddress()->getFirstName(),
+                'Lastname' => $orderEntity->getShippingAddress()->getLastName(),
+                'Company' => $orderEntity->getShippingAddress()->getCompany(),
+                'Address1' => $orderEntity->getShippingAddress()->getAddress1(),
+                'Address2' => $orderEntity->getShippingAddress()->getAddress2(),
+                'Address3' => $orderEntity->getShippingAddress()->getAddress3(),
+                'City' => $orderEntity->getShippingAddress()->getCity(),
+                'Zip' => $orderEntity->getShippingAddress()->getZipCode(),
+                'Country' => $orderEntity->getShippingAddress()->getCountry()->getName(),
+            ],
+            'Order' => [
+                'Number' => $orderEntity->getIdSalesOrder(),
+                'Comment' => $orderEntity->getNotes()->toArray(),
+                'OrderDate' => $orderEntity->getCreatedAt()->format('m/d/U H:i:s'), //TODO: Format date
+                'SubTotal' => '',
+                'GiftCard' => '',
+                'Discount' => '',
+                'Tax' => '',
+                'GrandTotal' => '',
+            ],
+            'Payment' => [
+                'PaymentMethod' => '',
+                'PaymentMethodCosts' => '',
+            ],
+            'Delivery' => [
+//                'DeliveryMethod' => $orderEntity->getSpySalesShipments()->getFirst()['name'],
+                'DeliveryService' => '',
+                'DeliveryCosts' => '',
+            ],
+        ];
+
+//        foreach ($orderItems as $orderItem) {
+//            $payload['OrderItem'][] = [
+//
+//            ];
+//        }
+
+        return $payload;
+    }
 
     /**
      * @return string
