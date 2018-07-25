@@ -50,6 +50,9 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      */
     public function handleNewOrderEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
     {
+        return $this->getFactory()
+            ->createNewOrderEventHandler()
+            ->handle($orderItems, $orderEntity, $data);
     }
 
     /**
@@ -61,7 +64,9 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      */
     public function handleOrderCanceledEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
     {
-        // TODO: Implement handleOrderCanceledEvent() method.
+        return $this->getFactory()
+            ->createOrderCanceledEventHandler()
+            ->handle($orderItems, $orderEntity, $data);
     }
 
     /**
@@ -73,7 +78,9 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      */
     public function handlePaymentNotReceivedEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
     {
-        // TODO: Implement handlePaymentNotReceivedEvent() method.
+        return $this->getFactory()
+            ->createPaymentNotReceivedEventHandler()
+            ->handle($orderItems, $orderEntity, $data);
     }
 
     /**
@@ -85,6 +92,8 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      */
     public function handleShippingConfirmationPlugin(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
     {
-        // TODO: Implement handleShippingConfirmationPlugin() method.
+        return $this->getFactory()
+            ->createShippingConfirmationEventHandler()
+            ->handle($orderItems, $orderEntity, $data);
     }
 }
