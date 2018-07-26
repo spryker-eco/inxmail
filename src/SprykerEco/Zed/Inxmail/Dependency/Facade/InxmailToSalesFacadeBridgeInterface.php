@@ -18,4 +18,3 @@ interface InxmailToSalesFacadeBridgeInterface
      */
     public function getOrderByIdSalesOrder(int $idOrder): OrderTransfer;
 }
-

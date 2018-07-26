@@ -9,6 +9,9 @@ namespace SprykerEco\Zed\Inxmail\Business\Mapper\Order;
 
 use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\PaymentMethodTransfer;
+use Generated\Shared\Transfer\ProductImageTransfer;
+use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractOrderMapper implements OrderMapperInterface
@@ -51,12 +54,12 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     {
         $payload = [
             'Customer' => [
-                'Mail' => 'aptah199494@gmail.com',
-                'Salutation' => 'Hello',
-                'Firstname' => 'Volodymyr',
-                'Lastname' => 'Hrychenko',
-                'Id' => 'id',
-                'Language' => 'En',
+                'Mail' => $orderTransfer->getCustomer()->getEmail(),
+                'Salutation' => $orderTransfer->getCustomer()->getSalutation(),
+                'Firstname' => $orderTransfer->getCustomer()->getFirstName(),
+                'Lastname' => $orderTransfer->getCustomer()->getLastName(),
+                'Id' => $orderTransfer->getCustomer()->getIdCustomer(),
+                'Language' => $orderTransfer->getCustomer()->getLocale() ? $orderTransfer->getCustomer()->getLocale()->getLocaleName() : '',
             ],
             'Billing' => [
                 'Salutation' =>  $orderTransfer->getBillingAddress()->getSalutation(),
@@ -86,28 +89,33 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Number' => $orderTransfer->getIdSalesOrder(),
                 'Comment' => $orderTransfer->getCartNote(),
                 'OrderDate' => $orderTransfer->getCreatedAt(), //TODO: Format date
-                'SubTotal' => '',
+                'SubTotal' => $orderTransfer->getTotals()->getSubtotal(),
                 'GiftCard' => '',
-                'Discount' => '',
-                'Tax' => '',
-                'GrandTotal' => '',
+                'Discount' => $orderTransfer->getTotals()->getDiscountTotal(),
+                'Tax' => $orderTransfer->getTotals()->getTaxTotal(),
+                'GrandTotal' => $orderTransfer->getTotals()->getGrandTotal(),
             ],
-            'Payment' => [
-                'PaymentMethod' => '',
-                'PaymentMethodCosts' => '',
-            ],
-            'Delivery' => [
-                'DeliveryMethod' => '',
-                'DeliveryService' => '',
-                'DeliveryCosts' => '',
-            ],
+            'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()),
+            'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods()),
         ];
 
-//        foreach ($orderItems as $orderItem) {
-//            $payload['OrderItem'][] = [
-//
-//            ];
-//        }
+        foreach ($orderTransfer->getItems() as $item) {
+            $payload['OrderItem'][] = [
+                'Name' => $item->getName(),
+                'Sku' => $item->getSku(),
+                'Image' => $this->getItemImageLink($item->getImages()),
+                'DeepLink' => '',
+                'Price' => $item->getUnitGrossPrice(),
+                'Quantity' => $item->getQuantity(),
+                'Sum' => $item->getSumGrossPrice(),
+                'OriginalPrice' => $item->getOriginUnitGrossPrice(),
+                'TaxAmount' => $item->getSumGrossPrice() - $item->getSumNetPrice(),
+                'TaxRate' => $item->getTaxRate(),
+                'Discount' => $item->getUnitDiscountAmountFullAggregation(),
+                'Size' => '',
+                'Color' => '',
+            ];
+        }
 
         return $payload;
     }
@@ -116,4 +124,58 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      * @return string
      */
     abstract protected function getEvent(): string;
+
+    /**
+     * @param \Generated\Shared\Transfer\ProductImageTransfer[] $images
+     *
+     * @return string
+     */
+    protected function getItemImageLink(ProductImageTransfer ...$images): string
+    {
+        return is_array($images) ? array_shift($images)->getExternalUrlSmall() : '';
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ShipmentMethodTransfer[] $methods
+     *
+     * @return array
+     */
+    protected function getOrderDeliveryInfo(ShipmentMethodTransfer ...$methods): array
+    {
+        if (!is_array($methods) || count($methods)) {
+            return [];
+        }
+
+        $method = array_shift($methods);
+
+        return [
+            'DeliveryMethod' => $method->getName(),
+            'DeliveryService' => $method->getName(),
+            'DeliveryCosts' => '',
+            'TrackingId' => '',
+            'TrackingLink' => '',
+            'ShippingDate' => $method->getDeliveryTime(),
+            'MultiDelivery' => false,
+        ];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PaymentMethodTransfer[] $methods
+     *
+     * @return array
+     */
+    protected function getPaymentMethodInfo(PaymentMethodTransfer ...$methods): array
+    {
+        if (!is_array($methods) || count($methods)) {
+            return [];
+        }
+
+        $method = array_shift($methods);
+
+        return [
+            'PaymentMethod' => $method->getMethodName(),
+            'PaymentMethodCosts' => 0,
+            'CheckDate' => new \DateTime(),
+        ];
+    }
 }
