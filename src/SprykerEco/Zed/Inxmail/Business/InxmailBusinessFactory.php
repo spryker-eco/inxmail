@@ -22,6 +22,8 @@ use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderCanceledMapper;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\PaymentNotReceivedMapper;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\ShippingConfirmationMapper;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface;
+use SprykerEco\Zed\Inxmail\InxmailDependencyProvider;
 
 /**
  * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
@@ -58,7 +60,8 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new OrderEventHandler(
             $this->createNewOrderMapper(),
-            $this->createEventAdapter()
+            $this->createEventAdapter(),
+            $this->getSalesFacade()
         );
     }
 
@@ -69,7 +72,8 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new OrderEventHandler(
             $this->createOrderCanceledMapper(),
-            $this->createEventAdapter()
+            $this->createEventAdapter(),
+            $this->getSalesFacade()
         );
     }
 
@@ -80,7 +84,8 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new OrderEventHandler(
             $this->createPaymentNotReceivedMapper(),
-            $this->createEventAdapter()
+            $this->createEventAdapter(),
+            $this->getSalesFacade()
         );
     }
 
@@ -91,7 +96,8 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new OrderEventHandler(
             $this->createShippingConfirmationMapper(),
-            $this->createEventAdapter()
+            $this->createEventAdapter(),
+            $this->getSalesFacade()
         );
     }
 
@@ -149,5 +155,13 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     public function createShippingConfirmationMapper(): OrderMapperInterface
     {
         return new ShippingConfirmationMapper($this->getConfig());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface
+     */
+    public function getSalesFacade(): InxmailToSalesFacadeBridgeInterface
+    {
+        return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_SALES);
     }
 }

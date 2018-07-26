@@ -7,10 +7,10 @@
 namespace SprykerEco\Zed\Inxmail\Business\Handler\Order;
 
 use Generated\Shared\Transfer\InxmailRequestTransfer;
-use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
+use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface;
 
 class OrderEventHandler implements OrderEventHandlerInterface
 {
@@ -25,37 +25,45 @@ class OrderEventHandler implements OrderEventHandlerInterface
      */
     protected $adapter;
 
-    public function __construct(OrderMapperInterface $mapper, AdapterInterface $adapter)
+    /**
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface
+     */
+    protected $salesFacade;
+
+    /**
+     * @param \SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface $mapper
+     * @param \SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface $adapter
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface $salesFacade
+     */
+    public function __construct(OrderMapperInterface $mapper, AdapterInterface $adapter, InxmailToSalesFacadeBridgeInterface $salesFacade)
     {
         $this->mapper = $mapper;
         $this->adapter = $adapter;
+        $this->salesFacade = $salesFacade;
     }
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handle(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
+    public function handle(int $idSalesOrder): string
     {
-        $transfer = $this->map($orderItems, $orderEntity, $data);
+        $orderTransfer = $this->salesFacade->getOrderByIdSalesOrder($idSalesOrder);
+        $transfer = $this->map($orderTransfer);
 
         return $this->send($transfer);
     }
 
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\InxmailRequestTransfer
      */
-    protected function map(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): InxmailRequestTransfer
+    protected function map(OrderTransfer $orderTransfer): InxmailRequestTransfer
     {
-        return $this->mapper->map($orderItems, $orderEntity, $data);
+        return $this->mapper->map($orderTransfer);
     }
 
     /**

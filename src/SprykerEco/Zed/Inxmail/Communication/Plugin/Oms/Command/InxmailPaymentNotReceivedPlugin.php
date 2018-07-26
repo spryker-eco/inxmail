@@ -15,7 +15,7 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 /**
  * @method \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface getFacade()
  */
-class InxmailPaymentNotReceivedRequest extends AbstractCommand implements CommandByOrderInterface
+class InxmailPaymentNotReceivedPlugin extends AbstractCommand implements CommandByOrderInterface
 {
     /**
      *

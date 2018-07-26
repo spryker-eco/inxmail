@@ -9,21 +9,11 @@ namespace SprykerEco\Zed\Inxmail;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesBridgeFacade;
 
 class InxmailDependencyProvider extends AbstractBundleDependencyProvider
 {
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    public function provideCommunicationLayerDependencies(Container $container)
-    {
-        //TODO Provide dependencies
-
-        return $container;
-    }
+    public const FACADE_SALES = 'FACADE_SALES';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -32,7 +22,7 @@ class InxmailDependencyProvider extends AbstractBundleDependencyProvider
      */
     public function provideBusinessLayerDependencies(Container $container)
     {
-        //TODO Provide dependencies
+        $container = $this->addFacadeSales($container);
 
         return $container;
     }
@@ -42,11 +32,12 @@ class InxmailDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function providePersistenceLayerDependencies(Container $container)
+    protected function addFacadeSales(Container $container): Container
     {
-        //TODO Provide dependencies
+        $container[static::FACADE_SALES] = function (Container $container) {
+            return new InxmailToSalesBridgeFacade($container->getLocator()->sales()->facade());
+        };
 
         return $container;
     }
-
 }

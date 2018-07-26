@@ -7,17 +7,12 @@
 
 namespace SprykerEco\Zed\Inxmail\Business\Handler\Order;
 
-use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
-
 interface OrderEventHandlerInterface
 {
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handle(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
+    public function handle(int $idSalesOrder): string;
 }

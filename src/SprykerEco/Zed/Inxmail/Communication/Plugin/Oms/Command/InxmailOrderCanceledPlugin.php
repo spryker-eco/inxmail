@@ -15,7 +15,7 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 /**
  * @method \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface getFacade()
  */
-class InxmailOrderCanceledRequest extends AbstractCommand implements CommandByOrderInterface
+class InxmailOrderCanceledPlugin extends AbstractCommand implements CommandByOrderInterface
 {
     /**
      *

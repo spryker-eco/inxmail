@@ -8,17 +8,14 @@
 namespace SprykerEco\Zed\Inxmail\Business\Mapper\Order;
 
 use Generated\Shared\Transfer\InxmailRequestTransfer;
-use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
+use Generated\Shared\Transfer\OrderTransfer;
 
 interface OrderMapperInterface
 {
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param \Generated\Shared\Transfer\OrderTransfer $transfer
      *
      * @return \Generated\Shared\Transfer\InxmailRequestTransfer
      */
-    public function map(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): InxmailRequestTransfer;
+    public function map(OrderTransfer $transfer): InxmailRequestTransfer;
 }

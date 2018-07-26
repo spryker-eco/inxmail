@@ -8,8 +8,6 @@
 namespace SprykerEco\Zed\Inxmail\Business;
 
 use Generated\Shared\Transfer\CustomerTransfer;
-use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
 interface InxmailFacadeInterface
 {
@@ -28,38 +26,30 @@ interface InxmailFacadeInterface
     public function handleCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): string;
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handleNewOrderEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
+    public function handleNewOrderEvent(int $idSalesOrder): string;
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handleOrderCanceledEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
+    public function handleOrderCanceledEvent(int $idSalesOrder): string;
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handlePaymentNotReceivedEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
+    public function handlePaymentNotReceivedEvent(int $idSalesOrder): string;
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handleShippingConfirmationPlugin(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string;
+    public function handleShippingConfirmationPlugin(int $idSalesOrder): string;
 }

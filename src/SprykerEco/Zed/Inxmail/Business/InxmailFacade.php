@@ -8,9 +8,7 @@
 namespace SprykerEco\Zed\Inxmail\Business;
 
 use Generated\Shared\Transfer\CustomerTransfer;
-use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
-use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
 /**
  * @method \SprykerEco\Zed\Inxmail\Business\InxmailBusinessFactory getFactory()
@@ -42,58 +40,50 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
     }
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handleNewOrderEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
+    public function handleNewOrderEvent(int $idSalesOrder): string
     {
         return $this->getFactory()
             ->createNewOrderEventHandler()
-            ->handle($orderItems, $orderEntity, $data);
+            ->handle($idSalesOrder);
     }
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handleOrderCanceledEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
+    public function handleOrderCanceledEvent(int $idSalesOrder): string
     {
         return $this->getFactory()
             ->createOrderCanceledEventHandler()
-            ->handle($orderItems, $orderEntity, $data);
+            ->handle($idSalesOrder);
     }
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handlePaymentNotReceivedEvent(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
+    public function handlePaymentNotReceivedEvent(int $idSalesOrder): string
     {
         return $this->getFactory()
             ->createPaymentNotReceivedEventHandler()
-            ->handle($orderItems, $orderEntity, $data);
+            ->handle($idSalesOrder);
     }
 
     /**
-     * @param array $orderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     * @param int $idSalesOrder
      *
      * @return string
      */
-    public function handleShippingConfirmationPlugin(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): string
+    public function handleShippingConfirmationPlugin(int $idSalesOrder): string
     {
         return $this->getFactory()
             ->createShippingConfirmationEventHandler()
-            ->handle($orderItems, $orderEntity, $data);
+            ->handle($idSalesOrder);
     }
 }
