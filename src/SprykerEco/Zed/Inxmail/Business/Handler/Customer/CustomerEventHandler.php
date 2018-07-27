@@ -24,6 +24,10 @@ class CustomerEventHandler implements CustomerEventHandlerInterface
      */
     protected $adapter;
 
+    /**
+     * @param \SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface $mapper
+     * @param \SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface $adapter
+     */
     public function __construct(CustomerMapperInterface $mapper, AdapterInterface $adapter)
     {
         $this->mapper = $mapper;

@@ -14,7 +14,6 @@ use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface
 
 class OrderEventHandler implements OrderEventHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface
      */
@@ -54,7 +53,6 @@ class OrderEventHandler implements OrderEventHandlerInterface
 
         return $this->send($transfer);
     }
-
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer

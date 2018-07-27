@@ -13,6 +13,7 @@ use Spryker\Zed\Mail\Dependency\Plugin\MailTypePluginInterface;
 
 /**
  * @method \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface getFacade()
+ * @method \SprykerEco\Zed\Inxmail\Business\InxmailBusinessFactory getFactory()
  */
 class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implements MailTypePluginInterface
 {

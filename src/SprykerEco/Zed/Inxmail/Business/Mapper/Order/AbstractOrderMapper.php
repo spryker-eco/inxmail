@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Inxmail\Business\Mapper\Order;
 
+use DateTime;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\PaymentMethodTransfer;
@@ -44,7 +45,6 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
         return $inxmailRequestTransfer;
     }
 
-
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
@@ -62,7 +62,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Language' => $orderTransfer->getCustomer()->getLocale() ? $orderTransfer->getCustomer()->getLocale()->getLocaleName() : '',
             ],
             'Billing' => [
-                'Salutation' =>  $orderTransfer->getBillingAddress()->getSalutation(),
+                'Salutation' => $orderTransfer->getBillingAddress()->getSalutation(),
                 'Firstname' => $orderTransfer->getBillingAddress()->getFirstName(),
                 'Lastname' => $orderTransfer->getBillingAddress()->getLastName(),
                 'Company' => $orderTransfer->getBillingAddress()->getCompany(),
@@ -74,7 +74,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Country' => $orderTransfer->getBillingAddress()->getCountry()->getName(),
             ],
             'Shipping' => [
-                'Salutation' =>  $orderTransfer->getShippingAddress()->getSalutation(),
+                'Salutation' => $orderTransfer->getShippingAddress()->getSalutation(),
                 'Firstname' => $orderTransfer->getShippingAddress()->getFirstName(),
                 'Lastname' => $orderTransfer->getShippingAddress()->getLastName(),
                 'Company' => $orderTransfer->getShippingAddress()->getCompany(),
@@ -130,7 +130,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      *
      * @return string
      */
-    protected function getItemImageLink(ProductImageTransfer ...$images): string
+    protected function getItemImageLink(array $images): string
     {
         return is_array($images) ? array_shift($images)->getExternalUrlSmall() : '';
     }
@@ -140,7 +140,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      *
      * @return array
      */
-    protected function getOrderDeliveryInfo(ShipmentMethodTransfer ...$methods): array
+    protected function getOrderDeliveryInfo(array $methods): array
     {
         if (!is_array($methods) || count($methods)) {
             return [];
@@ -164,7 +164,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      *
      * @return array
      */
-    protected function getPaymentMethodInfo(PaymentMethodTransfer ...$methods): array
+    protected function getPaymentMethodInfo(array $methods): array
     {
         if (!is_array($methods) || count($methods)) {
             return [];
@@ -175,7 +175,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
         return [
             'PaymentMethod' => $method->getMethodName(),
             'PaymentMethodCosts' => 0,
-            'CheckDate' => new \DateTime(),
+            'CheckDate' => new DateTime(),
         ];
     }
 }

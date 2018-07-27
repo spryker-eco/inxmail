@@ -25,7 +25,7 @@ abstract class AbstractAdapter implements AdapterInterface
     protected $client;
 
     /**
-     * @var InxmailConfig
+     * @var \SprykerEco\Zed\Inxmail\InxmailConfig
      */
     protected $config;
 
@@ -36,6 +36,9 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     abstract protected function getUrl(string $spaceId): string;
 
+    /**
+     * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
+     */
     public function __construct(InxmailConfig $config)
     {
         $this->config = $config;

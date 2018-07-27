@@ -41,7 +41,6 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
         return $inxmailRequestTransfer;
     }
 
-
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *

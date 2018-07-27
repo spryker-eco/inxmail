@@ -16,5 +16,5 @@ interface CustomerEventHandlerInterface
      *
      * @return string
      */
-    public function handle(CustomerTransfer $customerTransfer): string ;
+    public function handle(CustomerTransfer $customerTransfer): string;
 }
