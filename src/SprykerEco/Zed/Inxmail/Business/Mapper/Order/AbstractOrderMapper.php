@@ -10,9 +10,6 @@ namespace SprykerEco\Zed\Inxmail\Business\Mapper\Order;
 use DateTime;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\PaymentMethodTransfer;
-use Generated\Shared\Transfer\ProductImageTransfer;
-use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractOrderMapper implements OrderMapperInterface
