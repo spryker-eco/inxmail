@@ -11,7 +11,7 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
  * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
- * @method \SprykerEco\Zed\Inxmail\Persistence\InxmailQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\Inxmail\Persistence\InxmailQueryContainerInterface getQueryContainer()
  */
 class InxmailPersistenceFactory extends AbstractPersistenceFactory
 {

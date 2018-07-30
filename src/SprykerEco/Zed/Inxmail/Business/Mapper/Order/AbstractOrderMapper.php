@@ -32,6 +32,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     public function __construct(InxmailConfig $config, UtilDateTimeServiceInterface $dateTimeService)
     {
         $this->config = $config;
+        $this->dateTimeService = $dateTimeService;
     }
 
     /**
@@ -179,7 +180,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
         return [
             'PaymentMethod' => $method->getMethodName(),
             'PaymentMethodCosts' => 0,
-            'CheckDate' =>  $this->dateTimeService->formatDateTime(new DateTime()),
+            'CheckDate' => $this->dateTimeService->formatDateTime(new DateTime()),
         ];
     }
 }

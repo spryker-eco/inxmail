@@ -18,9 +18,7 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 class InxmailNewOrderPlugin extends AbstractCommand implements CommandByOrderInterface
 {
     /**
-     * Command which is executed per order basis
-     *
-     * @api
+     * {@inheritdoc}
      *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity

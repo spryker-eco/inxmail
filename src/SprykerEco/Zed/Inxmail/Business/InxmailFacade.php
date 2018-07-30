@@ -16,6 +16,8 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
 {
     /**
+     * {@inheritdoc}
+     *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return string
@@ -28,6 +30,8 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return string
@@ -40,6 +44,8 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param int $idSalesOrder
      *
      * @return string
@@ -52,6 +58,8 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param int $idSalesOrder
      *
      * @return string
@@ -64,6 +72,8 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param int $idSalesOrder
      *
      * @return string
@@ -76,6 +86,8 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param int $idSalesOrder
      *
      * @return string

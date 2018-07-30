@@ -29,7 +29,7 @@ use SprykerEco\Zed\Inxmail\InxmailDependencyProvider;
 
 /**
  * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
- * @method \SprykerEco\Zed\Inxmail\Persistence\InxmailQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\Inxmail\Persistence\InxmailQueryContainerInterface getQueryContainer()
  */
 class InxmailBusinessFactory extends AbstractBusinessFactory
 {
