@@ -7,6 +7,8 @@
 
 namespace SprykerEco\Zed\Inxmail\Business;
 
+use Spryker\Service\UtilDateTime\UtilDateTimeService;
+use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter;
@@ -130,7 +132,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createNewOrderMapper(): OrderMapperInterface
     {
-        return new NewOrderMapper($this->getConfig());
+        return new NewOrderMapper($this->getConfig(), $this->createUtilDateTimeService());
     }
 
     /**
@@ -138,7 +140,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createOrderCanceledMapper(): OrderMapperInterface
     {
-        return new OrderCanceledMapper($this->getConfig());
+        return new OrderCanceledMapper($this->getConfig(), $this->createUtilDateTimeService());
     }
 
     /**
@@ -146,7 +148,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createPaymentNotReceivedMapper(): OrderMapperInterface
     {
-        return new PaymentNotReceivedMapper($this->getConfig());
+        return new PaymentNotReceivedMapper($this->getConfig(), $this->createUtilDateTimeService());
     }
 
     /**
@@ -154,7 +156,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createShippingConfirmationMapper(): OrderMapperInterface
     {
-        return new ShippingConfirmationMapper($this->getConfig());
+        return new ShippingConfirmationMapper($this->getConfig(), $this->createUtilDateTimeService());
     }
 
     /**
@@ -163,5 +165,13 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     public function getSalesFacade(): InxmailToSalesFacadeBridgeInterface
     {
         return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_SALES);
+    }
+
+    /**
+     * @return \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface
+     */
+    public function createUtilDateTimeService(): UtilDateTimeServiceInterface
+    {
+        return new UtilDateTimeService();
     }
 }

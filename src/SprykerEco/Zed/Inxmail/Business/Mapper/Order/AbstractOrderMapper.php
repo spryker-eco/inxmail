@@ -10,6 +10,7 @@ namespace SprykerEco\Zed\Inxmail\Business\Mapper\Order;
 use DateTime;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractOrderMapper implements OrderMapperInterface
@@ -20,9 +21,15 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     protected $config;
 
     /**
-     * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
+     * @var \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface
      */
-    public function __construct(InxmailConfig $config)
+    protected $dateTimeService;
+
+    /**
+     * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
+     * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $dateTimeService
+     */
+    public function __construct(InxmailConfig $config, UtilDateTimeServiceInterface $dateTimeService)
     {
         $this->config = $config;
     }
@@ -85,7 +92,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
             'Order' => [
                 'Number' => $orderTransfer->getIdSalesOrder(),
                 'Comment' => $orderTransfer->getCartNote(),
-                'OrderDate' => $orderTransfer->getCreatedAt(), //TODO: Format date
+                'OrderDate' => $this->dateTimeService->formatDateTime($orderTransfer->getCreatedAt()),
                 'SubTotal' => $orderTransfer->getTotals()->getSubtotal(),
                 'GiftCard' => '',
                 'Discount' => $orderTransfer->getTotals()->getDiscountTotal(),
@@ -151,7 +158,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
             'DeliveryCosts' => '',
             'TrackingId' => '',
             'TrackingLink' => '',
-            'ShippingDate' => $method->getDeliveryTime(),
+            'ShippingDate' => $this->dateTimeService->formatDateTime((new DateTime())::createFromFormat('U', $method->getDeliveryTime())),
             'MultiDelivery' => false,
         ];
     }
@@ -172,7 +179,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
         return [
             'PaymentMethod' => $method->getMethodName(),
             'PaymentMethodCosts' => 0,
-            'CheckDate' => new DateTime(),
+            'CheckDate' =>  $this->dateTimeService->formatDateTime(new DateTime()),
         ];
     }
 }
