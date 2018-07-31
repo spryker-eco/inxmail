@@ -28,22 +28,12 @@ use SprykerEco\Zed\Inxmail\InxmailConfig;
  */
 class InxmailTest extends Unit
 {
-    /**
-     * @var InxmailBusinessFactory
-     */
-    protected $factory;
-
-    protected function _before()
-    {
-        $this->factory = $this->createInxmailFactoryMock();
-        parent::_before();
-    }
-
     public function testHandleCustomerRegisterEvent()
     {
         $facade = $this->prepareFacade();
         $this->assertTrue((bool)$facade->handleCustomerRegistrationEvent($this->prepareCustomerTransfer()));
     }
+
 
     /**
      * @return \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface
@@ -51,7 +41,7 @@ class InxmailTest extends Unit
     protected function prepareFacade(): InxmailFacadeInterface
     {
         $facade = $this->createInxmailFacade();
-        $facade->setFactory($this->factory);
+        $facade->setFactory($this->createInxmailFactoryMock());
 
         return $facade;
     }
