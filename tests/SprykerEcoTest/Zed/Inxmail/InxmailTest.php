@@ -9,16 +9,18 @@ namespace SprykerEcoTest\Zed\Inxmail;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\CustomerTransfer;
-use SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter;
+use Generated\Shared\Transfer\InxmailRequestTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
+use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandler;
 use SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandlerInterface;
+use SprykerEco\Zed\Inxmail\Business\Handler\Order\OrderEventHandlerInterface;
 use SprykerEco\Zed\Inxmail\Business\InxmailBusinessFactory;
 use SprykerEco\Zed\Inxmail\Business\InxmailFacade;
 use SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface;
-use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerRegistrationMapper;
-use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerResetPasswordMapper;
-use SprykerEco\Zed\Inxmail\InxmailConfig;
+use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface;
 
 /**
  * @group SprykerEcoTest
@@ -28,12 +30,23 @@ use SprykerEco\Zed\Inxmail\InxmailConfig;
  */
 class InxmailTest extends Unit
 {
+    /**
+     * @return void
+     */
     public function testHandleCustomerRegisterEvent()
     {
         $facade = $this->prepareFacade();
         $this->assertTrue((bool)$facade->handleCustomerRegistrationEvent($this->prepareCustomerTransfer()));
     }
 
+    /**
+     * @return void
+     */
+    public function testHandleCustomerResetPasswordEvent()
+    {
+        $facade = $this->prepareFacade();
+        $this->assertTrue((bool)$facade->handleCustomerResetPasswordEvent($this->prepareCustomerTransfer()));
+    }
 
     /**
      * @return \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface
@@ -60,10 +73,11 @@ class InxmailTest extends Unit
     protected function createInxmailFactoryMock(): InxmailBusinessFactory
     {
         $factory = $this->getMockBuilder(InxmailBusinessFactory::class)
-            ->setMethods(['createCustomerRegistrationEventHandler'])
+            ->setMethods(['createCustomerRegistrationEventHandler', 'createCustomerResetPasswordEventHandler'])
             ->getMock();
 
-        $factory->method('createCustomerRegistrationEventHandler')->willReturn($this->createCustomerRegistrationEventHandlerMock());
+        $factory->method('createCustomerRegistrationEventHandler')->willReturn($this->createCustomerEventHandlerMock());
+        $factory->method('createCustomerResetPasswordEventHandler')->willReturn($this->createCustomerEventHandlerMock());
 
         return $factory;
     }
@@ -79,50 +93,89 @@ class InxmailTest extends Unit
     /**
      * @return \SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandlerInterface
      */
-    protected function createCustomerRegistrationEventHandlerMock(): CustomerEventHandlerInterface
+    protected function createCustomerEventHandlerMock(): CustomerEventHandlerInterface
     {
         $handler = $this->getMockBuilder(CustomerEventHandler::class)
             ->disableOriginalConstructor()
-            ->setConstructorArgs([$this->createCustomerRegistrationMapper(), $this->createEventAdapter()])
+            ->setConstructorArgs([$this->createCustomerMapperMock(), $this->createAdapterMock()])
             ->enableOriginalConstructor()
-            ->setMethods(['send', 'map'])
+            ->setMethods(['send'])
             ->getMock();
 
-        $handler->expects($this->once())->method('map');
-        $handler->expects($this->once())->method('send')->willReturn(true);
+        $handler->method('send')->willReturn(true);
 
         return $handler;
     }
 
     /**
-     * @return InxmailConfig
+     * @return \SprykerEco\Zed\Inxmail\Business\Handler\Order\OrderEventHandlerInterface
      */
-    protected function createInxmailConfig()
+    protected function createOrderEventHandlerMock(): OrderEventHandlerInterface
     {
-        return new InxmailConfig();
+        $handler = $this->getMockBuilder(OrderEventHandlerInterface::class)
+            ->disableOriginalConstructor()
+            ->setConstructorArgs([$this->createCustomerMapperMock(), $this->createAdapterMock()])
+            ->enableOriginalConstructor()
+            ->setMethods(['send'])
+            ->getMock();
+
+        $handler->method('send')->willReturn(true);
+
+        return $handler;
     }
 
     /**
-     * @return CustomerMapperInterface
+     * @return \SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface
      */
-    protected function createCustomerRegistrationMapper(): CustomerMapperInterface
+    protected function createCustomerMapperMock(): CustomerMapperInterface
     {
-        return new CustomerRegistrationMapper($this->createInxmailConfig());
+        $mapper = $this->getMockBuilder(CustomerMapperInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['map'])
+            ->getMock();
+        $mapper->method('map')->willReturn(new InxmailRequestTransfer());
+
+        return $mapper;
     }
 
     /**
-     * @return CustomerMapperInterface
+     * @return \SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface
      */
-    protected function createCustomerResetPasswordMapper(): CustomerMapperInterface
+    protected function createOrderMapperMock(): OrderMapperInterface
     {
-        return new CustomerResetPasswordMapper($this->createInxmailConfig());
+        $mapper = $this->getMockBuilder(OrderMapperInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['map'])
+            ->getMock();
+        $mapper->method('map')->willReturn(new InxmailRequestTransfer());
+
+        return $mapper;
     }
 
     /**
-     * @return EventAdapter
+     * @return \SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface
      */
-    protected function createEventAdapter()
+    protected function createAdapterMock(): AdapterInterface
     {
-        return new EventAdapter($this->createInxmailConfig());
+        $mapper = $this->getMockBuilder(AdapterInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethodsExcept()
+            ->getMock();
+
+        return $mapper;
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface
+     */
+    protected function createSalesFacadeMock(): InxmailToSalesFacadeBridgeInterface
+    {
+        $facade = $this->getMockBuilder(InxmailToSalesFacadeBridgeInterface::class)
+            ->setMethods(['getOrderByIdSalesOrder'])
+            ->getMock();
+
+        $facade->method('getOrderByIdSalesOrder')->willReturn(new OrderTransfer());
+
+        return $facade;
     }
 }
