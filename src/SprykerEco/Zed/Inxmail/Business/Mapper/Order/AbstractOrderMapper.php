@@ -11,6 +11,7 @@ use DateTime;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractOrderMapper implements OrderMapperInterface
@@ -26,13 +27,23 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     protected $dateTimeService;
 
     /**
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface
+     */
+    protected $moneyFacadeBridge;
+
+    /**
      * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $dateTimeService
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge
      */
-    public function __construct(InxmailConfig $config, UtilDateTimeServiceInterface $dateTimeService)
-    {
+    public function __construct(
+        InxmailConfig $config,
+        UtilDateTimeServiceInterface $dateTimeService,
+        InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge
+    ) {
         $this->config = $config;
         $this->dateTimeService = $dateTimeService;
+        $this->moneyFacadeBridge = $moneyFacadeBridge;
     }
 
     /**
@@ -94,11 +105,11 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Number' => $orderTransfer->getIdSalesOrder(),
                 'Comment' => $orderTransfer->getCartNote(),
                 'OrderDate' => $this->dateTimeService->formatDateTime($orderTransfer->getCreatedAt()),
-                'SubTotal' => $orderTransfer->getTotals()->getSubtotal(),
+                'SubTotal' =>  $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getSubtotal()),
                 'GiftCard' => '',
                 'Discount' => $orderTransfer->getTotals()->getDiscountTotal(),
-                'Tax' => $orderTransfer->getTotals()->getTaxTotal(),
-                'GrandTotal' => $orderTransfer->getTotals()->getGrandTotal(),
+                'Tax' => $orderTransfer->getTotals()->getTaxTotal()->getAmount(),
+                'GrandTotal' =>  $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getGrandTotal()),
             ],
             'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()),
             'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods()),
@@ -110,11 +121,11 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Sku' => $item->getSku(),
                 'Image' => $this->getItemImageLink($item->getImages()),
                 'DeepLink' => '',
-                'Price' => $item->getUnitGrossPrice(),
+                'Price' =>  $this->getFormattedPriceFromInt($item->getUnitGrossPrice()),
                 'Quantity' => $item->getQuantity(),
-                'Sum' => $item->getSumGrossPrice(),
+                'Sum' => $this->getFormattedPriceFromInt($item->getSumGrossPrice()),
                 'OriginalPrice' => $item->getOriginUnitGrossPrice(),
-                'TaxAmount' => $item->getSumGrossPrice() - $item->getSumNetPrice(),
+                'TaxAmount' =>  $this->getFormattedPriceFromInt($item->getSumGrossPrice() - $item->getSumNetPrice()),
                 'TaxRate' => $item->getTaxRate(),
                 'Discount' => $item->getUnitDiscountAmountFullAggregation(),
                 'Size' => '',
@@ -182,5 +193,17 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
             'PaymentMethodCosts' => 0,
             'CheckDate' => $this->dateTimeService->formatDateTime(new DateTime()),
         ];
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return string
+     */
+    protected function getFormattedPriceFromInt(int $value): string
+    {
+        $moneyTransfer = $this->moneyFacadeBridge->fromInteger($value);
+
+        return $this->moneyFacadeBridge->formatWithSymbol($moneyTransfer);
     }
 }
