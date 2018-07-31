@@ -14,6 +14,7 @@ use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandler;
 use SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandlerInterface;
+use SprykerEco\Zed\Inxmail\Business\Handler\Order\OrderEventHandler;
 use SprykerEco\Zed\Inxmail\Business\Handler\Order\OrderEventHandlerInterface;
 use SprykerEco\Zed\Inxmail\Business\InxmailBusinessFactory;
 use SprykerEco\Zed\Inxmail\Business\InxmailFacade;
@@ -49,6 +50,42 @@ class InxmailTest extends Unit
     }
 
     /**
+     * @return void
+     */
+    public function testHandleOrderCreatedEvent()
+    {
+        $facade = $this->prepareFacade();
+        $this->assertTrue((bool)$facade->handleNewOrderEvent(1));
+    }
+
+    /**
+     * @return void
+     */
+    public function testHandleOrderCanceledEvent()
+    {
+        $facade = $this->prepareFacade();
+        $this->assertTrue((bool)$facade->handleOrderCanceledEvent(1));
+    }
+
+    /**
+     * @return void
+     */
+    public function testHandleShippingConfirmationEvent()
+    {
+        $facade = $this->prepareFacade();
+        $this->assertTrue((bool)$facade->handleShippingConfirmationPlugin(1));
+    }
+
+    /**
+     * @return void
+     */
+    public function testHandlePaymentNotReceivedEvent()
+    {
+        $facade = $this->prepareFacade();
+        $this->assertTrue((bool)$facade->handlePaymentNotReceivedEvent(1));
+    }
+
+    /**
      * @return \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface
      */
     protected function prepareFacade(): InxmailFacadeInterface
@@ -73,11 +110,22 @@ class InxmailTest extends Unit
     protected function createInxmailFactoryMock(): InxmailBusinessFactory
     {
         $factory = $this->getMockBuilder(InxmailBusinessFactory::class)
-            ->setMethods(['createCustomerRegistrationEventHandler', 'createCustomerResetPasswordEventHandler'])
+            ->setMethods([
+                'createCustomerRegistrationEventHandler',
+                'createCustomerResetPasswordEventHandler',
+                'createNewOrderEventHandler',
+                'createOrderCanceledEventHandler',
+                'createPaymentNotReceivedEventHandler',
+                'createShippingConfirmationEventHandler',
+            ])
             ->getMock();
 
         $factory->method('createCustomerRegistrationEventHandler')->willReturn($this->createCustomerEventHandlerMock());
         $factory->method('createCustomerResetPasswordEventHandler')->willReturn($this->createCustomerEventHandlerMock());
+        $factory->method('createNewOrderEventHandler')->willReturn($this->createOrderEventHandlerMock());
+        $factory->method('createOrderCanceledEventHandler')->willReturn($this->createOrderEventHandlerMock());
+        $factory->method('createPaymentNotReceivedEventHandler')->willReturn($this->createOrderEventHandlerMock());
+        $factory->method('createShippingConfirmationEventHandler')->willReturn($this->createOrderEventHandlerMock());
 
         return $factory;
     }
@@ -112,9 +160,9 @@ class InxmailTest extends Unit
      */
     protected function createOrderEventHandlerMock(): OrderEventHandlerInterface
     {
-        $handler = $this->getMockBuilder(OrderEventHandlerInterface::class)
+        $handler = $this->getMockBuilder(OrderEventHandler::class)
             ->disableOriginalConstructor()
-            ->setConstructorArgs([$this->createCustomerMapperMock(), $this->createAdapterMock()])
+            ->setConstructorArgs([$this->createOrderMapperMock(), $this->createAdapterMock(), $this->createSalesFacadeMock()])
             ->enableOriginalConstructor()
             ->setMethods(['send'])
             ->getMock();

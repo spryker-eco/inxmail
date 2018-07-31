@@ -8,9 +8,8 @@
 namespace SprykerEco\Zed\Inxmail\Dependency\Facade;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 
-class InxmailToSalesBridgeFacade implements InxmailToSalesFacadeBridgeInterface
+class InxmailToSalesFacadeBridge implements InxmailToSalesFacadeBridgeInterface
 {
     /**
      * @var \Spryker\Zed\Sales\Business\SalesFacadeInterface
@@ -20,7 +19,7 @@ class InxmailToSalesBridgeFacade implements InxmailToSalesFacadeBridgeInterface
     /**
      * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      */
-    public function __construct(SalesFacadeInterface $salesFacade)
+    public function __construct($salesFacade)
     {
         $this->salesFacade = $salesFacade;
     }

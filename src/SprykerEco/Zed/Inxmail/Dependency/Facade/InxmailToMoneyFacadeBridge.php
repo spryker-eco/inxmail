@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\Inxmail\Dependency\Facade;
 
 use Generated\Shared\Transfer\MoneyTransfer;
-use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 
 class InxmailToMoneyFacadeBridge implements InxmailToMoneyFacadeBridgeInterface
 {
@@ -20,7 +19,7 @@ class InxmailToMoneyFacadeBridge implements InxmailToMoneyFacadeBridgeInterface
     /**
      * @param \Spryker\Zed\Money\Business\MoneyFacadeInterface $moneyFacade
      */
-    public function __construct(MoneyFacadeInterface $moneyFacade)
+    public function __construct($moneyFacade)
     {
         $this->moneyFacade = $moneyFacade;
     }
