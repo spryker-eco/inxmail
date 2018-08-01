@@ -111,8 +111,8 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Tax' => $orderTransfer->getTotals()->getTaxTotal()->getAmount(),
                 'GrandTotal' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getGrandTotal()),
             ],
-            'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()),
-            'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods()),
+            'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()->offsetGet(0)),
+            'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods()->offsetGet(0)),
         ];
 
         foreach ($orderTransfer->getItems() as $item) {
@@ -142,31 +142,25 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     abstract protected function getEvent(): string;
 
     /**
-     * @param \Generated\Shared\Transfer\ProductImageTransfer[] $images
+     * @param \Generated\Shared\Transfer\ProductImageTransfer $images
      *
      * @return string
      */
-    protected function getItemImageLink(array $images): string
+    protected function getItemImageLink($images): string
     {
         return is_array($images) ? array_shift($images)->getExternalUrlSmall() : '';
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ShipmentMethodTransfer[] $methods
+     * @param \Generated\Shared\Transfer\ShipmentMethodTransfer $method
      *
      * @return array
      */
-    protected function getOrderDeliveryInfo(array $methods): array
+    protected function getOrderDeliveryInfo($method): array
     {
-        if (!is_array($methods) || count($methods)) {
-            return [];
-        }
-
-        $method = array_shift($methods);
-
         return [
             'DeliveryMethod' => $method->getName(),
-            'DeliveryService' => $method->getName(),
+            'DeliveryService' => $method->getCarrierName(),
             'DeliveryCosts' => '',
             'TrackingId' => '',
             'TrackingLink' => '',
@@ -176,20 +170,14 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\PaymentMethodTransfer[] $methods
+     * @param \Generated\Shared\Transfer\PaymentTransfer $method
      *
      * @return array
      */
-    protected function getPaymentMethodInfo(array $methods): array
+    protected function getPaymentMethodInfo($method): array
     {
-        if (!is_array($methods) || count($methods)) {
-            return [];
-        }
-
-        $method = array_shift($methods);
-
         return [
-            'PaymentMethod' => $method->getMethodName(),
+            'PaymentMethod' => $method->getPaymentMethod(),
             'PaymentMethodCosts' => 0,
             'CheckDate' => $this->dateTimeService->formatDateTime(new DateTime()),
         ];
