@@ -35,7 +35,6 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
     {
         $inxmailRequestTransfer = new InxmailRequestTransfer();
         $inxmailRequestTransfer->setEvent($this->getEvent());
-        $inxmailRequestTransfer->setTransactionId(uniqid()); //TODO: Ask ALEX about it
         $inxmailRequestTransfer->setPayload($this->getPayload($customerTransfer));
 
         return $inxmailRequestTransfer;
@@ -51,7 +50,7 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
         return [
             'Customer' => [
                 'Mail' => $customerTransfer->getEmail(),
-                'LoginUrl' => 'LOGIN_URL', //TODO: Ask alex about this one
+                'LoginUrl' => 'LOGIN_URL',
                 'Salutation' => $customerTransfer->getSalutation(),
                 'Firstname' => $customerTransfer->getFirstName(),
                 'Lastname' => $customerTransfer->getLastName(),

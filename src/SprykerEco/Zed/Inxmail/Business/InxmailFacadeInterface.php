@@ -83,5 +83,5 @@ interface InxmailFacadeInterface
      *
      * @return string
      */
-    public function handleShippingConfirmationPlugin(int $idSalesOrder): string;
+    public function handleShippingConfirmationEvent(int $idSalesOrder): string;
 }

@@ -55,7 +55,6 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     {
         $inxmailRequestTransfer = new InxmailRequestTransfer();
         $inxmailRequestTransfer->setEvent($this->getEvent());
-        $inxmailRequestTransfer->setTransactionId(uniqid()); //TODO: Ask ALEX about it
         $inxmailRequestTransfer->setPayload($this->getPayload($orderTransfer));
 
         return $inxmailRequestTransfer;
@@ -107,8 +106,8 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'OrderDate' => $this->dateTimeService->formatDateTime($orderTransfer->getCreatedAt()),
                 'SubTotal' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getSubtotal()),
                 'GiftCard' => '',
-                'Discount' => $orderTransfer->getTotals()->getDiscountTotal(),
-                'Tax' => $orderTransfer->getTotals()->getTaxTotal()->getAmount(),
+                'Discount' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getDiscountTotal()),
+                'Tax' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getTaxTotal()->getAmount()),
                 'GrandTotal' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getGrandTotal()),
             ],
             'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()->offsetGet(0)),
@@ -124,10 +123,10 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Price' => $this->getFormattedPriceFromInt($item->getUnitGrossPrice()),
                 'Quantity' => $item->getQuantity(),
                 'Sum' => $this->getFormattedPriceFromInt($item->getSumGrossPrice()),
-                'OriginalPrice' => $item->getOriginUnitGrossPrice(),
+                'OriginalPrice' => $item->getOriginUnitGrossPrice() ? $this->getFormattedPriceFromInt($item->getOriginUnitGrossPrice()) : null,
                 'TaxAmount' => $this->getFormattedPriceFromInt($item->getSumGrossPrice() - $item->getSumNetPrice()),
                 'TaxRate' => $item->getTaxRate(),
-                'Discount' => $item->getUnitDiscountAmountFullAggregation(),
+                'Discount' => $this->getFormattedPriceFromInt($item->getUnitDiscountAmountFullAggregation()),
                 'Size' => '',
                 'Color' => '',
             ];

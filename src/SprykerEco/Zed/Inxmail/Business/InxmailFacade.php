@@ -92,7 +92,7 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      *
      * @return string
      */
-    public function handleShippingConfirmationPlugin(int $idSalesOrder): string
+    public function handleShippingConfirmationEvent(int $idSalesOrder): string
     {
         return $this->getFactory()
             ->createShippingConfirmationEventHandler()

@@ -73,7 +73,7 @@ class InxmailTest extends Unit
     public function testHandleShippingConfirmationEvent()
     {
         $facade = $this->prepareFacade();
-        $this->assertTrue((bool)$facade->handleShippingConfirmationPlugin(1));
+        $this->assertTrue((bool)$facade->handleShippingConfirmationEvent(1));
     }
 
     /**

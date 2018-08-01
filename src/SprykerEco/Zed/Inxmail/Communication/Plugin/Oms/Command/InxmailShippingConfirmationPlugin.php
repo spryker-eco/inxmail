@@ -28,6 +28,6 @@ class InxmailShippingConfirmationPlugin extends AbstractCommand implements Comma
      */
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $this->getFacade()->handleNewOrderEvent($orderEntity->getIdSalesOrder());
+        $this->getFacade()->handleShippingConfirmationEvent($orderEntity->getIdSalesOrder());
     }
 }
