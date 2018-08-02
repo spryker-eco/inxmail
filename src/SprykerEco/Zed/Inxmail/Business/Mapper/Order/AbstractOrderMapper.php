@@ -7,11 +7,17 @@
 
 namespace SprykerEco\Zed\Inxmail\Business\Mapper\Order;
 
+use ArrayObject;
 use DateTime;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
+use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\ProductAbstractTransfer;
+use Generated\Shared\Transfer\ProductImageTransfer;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
+use Spryker\Shared\Shipment\ShipmentConstants;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractOrderMapper implements OrderMapperInterface
@@ -32,18 +38,26 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     protected $moneyFacadeBridge;
 
     /**
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface
+     */
+    protected $productFacadeBridge;
+
+    /**
      * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $dateTimeService
      * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface $productFacadeBridge
      */
     public function __construct(
         InxmailConfig $config,
         UtilDateTimeServiceInterface $dateTimeService,
-        InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge
+        InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge,
+        InxmailToProductFacadeBridgeInterface $productFacadeBridge
     ) {
         $this->config = $config;
         $this->dateTimeService = $dateTimeService;
         $this->moneyFacadeBridge = $moneyFacadeBridge;
+        $this->productFacadeBridge = $productFacadeBridge;
     }
 
     /**
@@ -55,6 +69,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     {
         $inxmailRequestTransfer = new InxmailRequestTransfer();
         $inxmailRequestTransfer->setEvent($this->getEvent());
+        $inxmailRequestTransfer->setTransactionId(uniqid('order_'));
         $inxmailRequestTransfer->setPayload($this->getPayload($orderTransfer));
 
         return $inxmailRequestTransfer;
@@ -67,6 +82,8 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      */
     protected function getPayload(OrderTransfer $orderTransfer): array
     {
+        $locale = $orderTransfer->getCustomer()->getLocale() ? $orderTransfer->getCustomer()->getLocale()->getLocaleName() : '';
+
         $payload = [
             'Customer' => [
                 'Mail' => $orderTransfer->getCustomer()->getEmail(),
@@ -74,7 +91,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Firstname' => $orderTransfer->getCustomer()->getFirstName(),
                 'Lastname' => $orderTransfer->getCustomer()->getLastName(),
                 'Id' => $orderTransfer->getCustomer()->getIdCustomer(),
-                'Language' => $orderTransfer->getCustomer()->getLocale() ? $orderTransfer->getCustomer()->getLocale()->getLocaleName() : '',
+                'Language' => $locale,
             ],
             'Billing' => [
                 'Salutation' => $orderTransfer->getBillingAddress()->getSalutation(),
@@ -105,13 +122,12 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Comment' => $orderTransfer->getCartNote(),
                 'OrderDate' => $this->dateTimeService->formatDateTime($orderTransfer->getCreatedAt()),
                 'SubTotal' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getSubtotal()),
-                'GiftCard' => '',
                 'Discount' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getDiscountTotal()),
                 'Tax' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getTaxTotal()->getAmount()),
                 'GrandTotal' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getGrandTotal()),
             ],
-            'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()->offsetGet(0)),
-            'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods()->offsetGet(0)),
+            'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()),
+            'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods(), $orderTransfer->getExpenses()),
         ];
 
         foreach ($orderTransfer->getItems() as $item) {
@@ -119,7 +135,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Name' => $item->getName(),
                 'Sku' => $item->getSku(),
                 'Image' => $this->getItemImageLink($item->getImages()),
-                'DeepLink' => '',
+                'DeepLink' => $this->getDeepLink($item, $locale),
                 'Price' => $this->getFormattedPriceFromInt($item->getUnitGrossPrice()),
                 'Quantity' => $item->getQuantity(),
                 'Sum' => $this->getFormattedPriceFromInt($item->getSumGrossPrice()),
@@ -127,8 +143,6 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'TaxAmount' => $this->getFormattedPriceFromInt($item->getSumGrossPrice() - $item->getSumNetPrice()),
                 'TaxRate' => $item->getTaxRate(),
                 'Discount' => $this->getFormattedPriceFromInt($item->getUnitDiscountAmountFullAggregation()),
-                'Size' => '',
-                'Color' => '',
             ];
         }
 
@@ -141,45 +155,69 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     abstract protected function getEvent(): string;
 
     /**
-     * @param \Generated\Shared\Transfer\ProductImageTransfer $images
+     * @param \ArrayObject $images
      *
      * @return string
      */
-    protected function getItemImageLink($images): string
+    protected function getItemImageLink(ArrayObject $images): string
     {
-        return is_array($images) ? array_shift($images)->getExternalUrlSmall() : '';
+        /**
+         * @var ProductImageTransfer $image
+         */
+        foreach ($images as $image) {
+            return $image->getExternalUrlSmall();
+        }
+
+        return '';
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ShipmentMethodTransfer $method
+     * @param \ArrayObject $methods
+     * @param \ArrayObject $expenses
      *
      * @return array
      */
-    protected function getOrderDeliveryInfo($method): array
+    protected function getOrderDeliveryInfo(ArrayObject $methods, ArrayObject $expenses): array
     {
-        return [
-            'DeliveryMethod' => $method->getName(),
-            'DeliveryService' => $method->getCarrierName(),
-            'DeliveryCosts' => '',
-            'TrackingId' => '',
-            'TrackingLink' => '',
-            'ShippingDate' => $this->dateTimeService->formatDateTime((new DateTime())::createFromFormat('U', $method->getDeliveryTime())),
-            'MultiDelivery' => false,
-        ];
+        $result = [];
+
+        /**
+         * @var \Generated\Shared\Transfer\ShipmentMethodTransfer $method
+         */
+        foreach ($methods as $method) {
+            $result[] = [
+                'DeliveryMethod' => $method->getName(),
+                'DeliveryService' => $method->getCarrierName(),
+                'DeliveryCosts' => $this->getDeliveryCosts($expenses),
+                'ShippingDate' => $this->dateTimeService->formatDateTime((new DateTime())::createFromFormat('U', $method->getDeliveryTime())),
+                'MultiDelivery' => false,
+            ];
+        }
+
+        return $result;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\PaymentTransfer $method
+     * @param \ArrayObject $methods
      *
      * @return array
      */
-    protected function getPaymentMethodInfo($method): array
+    protected function getPaymentMethodInfo(ArrayObject $methods): array
     {
-        return [
-            'PaymentMethod' => $method->getPaymentMethod(),
-            'PaymentMethodCosts' => 0,
-            'CheckDate' => $this->dateTimeService->formatDateTime(new DateTime()),
-        ];
+        $result = [];
+
+        /**
+         * @var \Generated\Shared\Transfer\PaymentTransfer $method
+         */
+        foreach ($methods as $method) {
+            $result[] = [
+                'PaymentMethod' => $method->getPaymentMethod(),
+                'PaymentMethodCosts' => $this->getFormattedPriceFromInt($method->getAmount()),
+                'CheckDate' => $this->dateTimeService->formatDateTime(new DateTime()),
+            ];
+        }
+
+        return $result;
     }
 
     /**
@@ -192,5 +230,44 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
         $moneyTransfer = $this->moneyFacadeBridge->fromInteger($value);
 
         return $this->moneyFacadeBridge->formatWithSymbol($moneyTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param string $locale
+     *
+     * @return string
+     */
+    protected function getDeepLink(ItemTransfer $itemTransfer, string $locale): string
+    {
+        $transfer = new ProductAbstractTransfer();
+        $transfer->setIdProductAbstract($itemTransfer->getIdProductAbstract());
+        $transfer->setSku($itemTransfer->getSku());
+
+        $urls = $this->productFacadeBridge->getProductUrl($transfer)->getUrls();
+        foreach ($urls as $url) {
+            if ($url->getLocale() === $locale) {
+                return $url->getUrl();
+            }
+        }
+
+        return $urls->offsetGet(0)->getUrl();
+    }
+
+    /**
+     * @param \ArrayObject $expenses
+     *
+     * @return string
+     */
+    protected function getDeliveryCosts(ArrayObject $expenses): string
+    {
+
+        foreach ($expenses as $expens) {
+            if ($expens->getType() === ShipmentConstants::SHIPMENT_EXPENSE_TYPE) {
+                return $this->getFormattedPriceFromInt($expens->getSumGrossPrice());
+            }
+        }
+
+        return $this->getFormattedPriceFromInt(0);
     }
 }

@@ -25,6 +25,7 @@ use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\PaymentNotReceivedMapper;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\ShippingConfirmationMapper;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface;
 use SprykerEco\Zed\Inxmail\InxmailDependencyProvider;
 
@@ -133,7 +134,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createNewOrderMapper(): OrderMapperInterface
     {
-        return new NewOrderMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade());
+        return new NewOrderMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade(), $this->getProductFacade());
     }
 
     /**
@@ -141,7 +142,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createOrderCanceledMapper(): OrderMapperInterface
     {
-        return new OrderCanceledMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade());
+        return new OrderCanceledMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade(), $this->getProductFacade());
     }
 
     /**
@@ -149,7 +150,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createPaymentNotReceivedMapper(): OrderMapperInterface
     {
-        return new PaymentNotReceivedMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade());
+        return new PaymentNotReceivedMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade(), $this->getProductFacade());
     }
 
     /**
@@ -157,7 +158,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createShippingConfirmationMapper(): OrderMapperInterface
     {
-        return new ShippingConfirmationMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade());
+        return new ShippingConfirmationMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade(), $this->getProductFacade());
     }
 
     /**
@@ -174,6 +175,14 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     public function getMoneyFacade(): InxmailToMoneyFacadeBridgeInterface
     {
         return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_MONEY);
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface
+     */
+    public function getProductFacade(): InxmailToProductFacadeBridgeInterface
+    {
+        return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_PRODUCT);
     }
 
     /**

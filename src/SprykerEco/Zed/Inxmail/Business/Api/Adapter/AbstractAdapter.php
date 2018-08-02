@@ -54,6 +54,7 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     public function sendRequest(InxmailRequestTransfer $transfer)
     {
+        echo json_encode($transfer->toArray()); exit;
         $options[RequestOptions::BODY] = json_encode($transfer->toArray());
         $options[RequestOptions::HEADERS] = ['Content-Type' => 'application/json'];
         $options[RequestOptions::AUTH] = [$this->config->getInxmailKeyId(), $this->config->getInxmailSecret()];
