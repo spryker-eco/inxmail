@@ -24,6 +24,7 @@ use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderCanceledMapper;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\PaymentNotReceivedMapper;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\ShippingConfirmationMapper;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface;
@@ -118,7 +119,10 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createCustomerRegistrationMapper(): CustomerMapperInterface
     {
-        return new CustomerRegistrationMapper($this->getConfig());
+        return new CustomerRegistrationMapper(
+            $this->getConfig(),
+            $this->createLocaleFacade()
+        );
     }
 
     /**
@@ -126,7 +130,10 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createCustomerResetPasswordMapper(): CustomerMapperInterface
     {
-        return new CustomerResetPasswordMapper($this->getConfig());
+        return new CustomerResetPasswordMapper(
+            $this->getConfig(),
+            $this->createLocaleFacade()
+        );
     }
 
     /**
@@ -134,7 +141,13 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createNewOrderMapper(): OrderMapperInterface
     {
-        return new NewOrderMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade(), $this->getProductFacade());
+        return new NewOrderMapper(
+            $this->getConfig(),
+            $this->createUtilDateTimeService(),
+            $this->getMoneyFacade(),
+            $this->getProductFacade(),
+            $this->createLocaleFacade()
+        );
     }
 
     /**
@@ -142,7 +155,13 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createOrderCanceledMapper(): OrderMapperInterface
     {
-        return new OrderCanceledMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade(), $this->getProductFacade());
+        return new OrderCanceledMapper(
+            $this->getConfig(),
+            $this->createUtilDateTimeService(),
+            $this->getMoneyFacade(),
+            $this->getProductFacade(),
+            $this->createLocaleFacade()
+        );
     }
 
     /**
@@ -150,7 +169,13 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createPaymentNotReceivedMapper(): OrderMapperInterface
     {
-        return new PaymentNotReceivedMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade(), $this->getProductFacade());
+        return new PaymentNotReceivedMapper(
+            $this->getConfig(),
+            $this->createUtilDateTimeService(),
+            $this->getMoneyFacade(),
+            $this->getProductFacade(),
+            $this->createLocaleFacade()
+        );
     }
 
     /**
@@ -158,7 +183,13 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createShippingConfirmationMapper(): OrderMapperInterface
     {
-        return new ShippingConfirmationMapper($this->getConfig(), $this->createUtilDateTimeService(), $this->getMoneyFacade(), $this->getProductFacade());
+        return new ShippingConfirmationMapper(
+            $this->getConfig(),
+            $this->createUtilDateTimeService(),
+            $this->getMoneyFacade(),
+            $this->getProductFacade(),
+            $this->createLocaleFacade()
+        );
     }
 
     /**
@@ -191,5 +222,13 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     public function createUtilDateTimeService(): UtilDateTimeServiceInterface
     {
         return new UtilDateTimeService();
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface
+     */
+    public function createLocaleFacade(): InxmailToLocaleFacadeInterface
+    {
+        return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_LOCALE);
     }
 }

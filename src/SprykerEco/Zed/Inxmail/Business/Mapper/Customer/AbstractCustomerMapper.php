@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Inxmail\Business\Mapper\Customer;
 
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractCustomerMapper implements CustomerMapperInterface
@@ -19,11 +20,18 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
     protected $config;
 
     /**
-     * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface
      */
-    public function __construct(InxmailConfig $config)
+    protected $localeFacade;
+
+    /**
+     * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface $localeFacade
+     */
+    public function __construct(InxmailConfig $config, InxmailToLocaleFacadeInterface $localeFacade)
     {
         $this->config = $config;
+        $this->localeFacade = $localeFacade;
     }
 
     /**
@@ -57,6 +65,10 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
                 'Id' => $customerTransfer->getIdCustomer(),
                 'Language' => $customerTransfer->getLocale() ? $customerTransfer->getLocale()->getLocaleName() : null,
             ],
+            'Shop' => [
+                'ShopLocale' => $this->localeFacade->getCurrentLocaleName(),
+                'ShopUrl' => $this->config->getStoreBaseUrl(),
+            ]
         ];
     }
 

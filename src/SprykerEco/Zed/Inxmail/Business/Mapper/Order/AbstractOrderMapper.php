@@ -16,6 +16,7 @@ use Generated\Shared\Transfer\ProductAbstractTransfer;
 use Generated\Shared\Transfer\ProductImageTransfer;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Shared\Shipment\ShipmentConstants;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
@@ -43,21 +44,29 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     protected $productFacadeBridge;
 
     /**
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface
+     */
+    protected $localeFacadeBridge;
+
+    /**
      * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $dateTimeService
      * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge
      * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface $productFacadeBridge
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface $localeFacadeBridge
      */
     public function __construct(
         InxmailConfig $config,
         UtilDateTimeServiceInterface $dateTimeService,
         InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge,
-        InxmailToProductFacadeBridgeInterface $productFacadeBridge
+        InxmailToProductFacadeBridgeInterface $productFacadeBridge,
+        InxmailToLocaleFacadeInterface $localeFacadeBridge
     ) {
         $this->config = $config;
         $this->dateTimeService = $dateTimeService;
         $this->moneyFacadeBridge = $moneyFacadeBridge;
         $this->productFacadeBridge = $productFacadeBridge;
+        $this->localeFacadeBridge = $localeFacadeBridge;
     }
 
     /**
@@ -128,6 +137,10 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
             ],
             'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()),
             'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods(), $orderTransfer->getExpenses()),
+            'Shop' => [
+                'ShopLocale' => $this->localeFacadeBridge->getCurrentLocaleName(),
+                'ShopUrl' => $this->config->getStoreBaseUrl(),
+            ]
         ];
 
         foreach ($orderTransfer->getItems() as $item) {

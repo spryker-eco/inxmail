@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Inxmail;
 
+use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 use SprykerEco\Shared\Inxmail\InxmailConstants;
 
@@ -82,5 +83,12 @@ class InxmailConfig extends AbstractBundleConfig
     public function getInxmailEventOrderPaymentIsNotReceived(): string
     {
         return $this->get(InxmailConstants::EVENT_ORDER_PAYMENT_IS_NOT_RECEIVED);
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreBaseUrl(): string {
+        return $this->get(ApplicationConstants::BASE_URL_YVES);
     }
 }
