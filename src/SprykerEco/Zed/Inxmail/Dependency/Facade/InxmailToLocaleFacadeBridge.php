@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\Inxmail\Dependency\Facade;
 
-
 class InxmailToLocaleFacadeBridge implements InxmailToLocaleFacadeInterface
 {
     /**

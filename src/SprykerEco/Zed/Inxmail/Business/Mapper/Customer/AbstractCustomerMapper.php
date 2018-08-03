@@ -63,12 +63,12 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
                 'Firstname' => $customerTransfer->getFirstName(),
                 'Lastname' => $customerTransfer->getLastName(),
                 'Id' => $customerTransfer->getIdCustomer(),
-                'Language' => $customerTransfer->getLocale() ? $customerTransfer->getLocale()->getLocaleName() : null,
+                'Language' => $customerTransfer->getLocale() ? $customerTransfer->getLocale()->getLocaleName() : $this->localeFacade->getCurrentLocaleName(),
             ],
             'Shop' => [
                 'ShopLocale' => $this->localeFacade->getCurrentLocaleName(),
                 'ShopUrl' => $this->config->getStoreBaseUrl(),
-            ]
+            ],
         ];
     }
 

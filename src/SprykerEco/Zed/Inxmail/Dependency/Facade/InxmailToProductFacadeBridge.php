@@ -9,19 +9,18 @@ namespace SprykerEco\Zed\Inxmail\Dependency\Facade;
 
 use Generated\Shared\Transfer\ProductAbstractTransfer;
 use Generated\Shared\Transfer\ProductUrlTransfer;
-use Spryker\Zed\Product\Business\ProductFacadeInterface;
 
 class InxmailToProductFacadeBridge implements InxmailToProductFacadeBridgeInterface
 {
     /**
-     * @var ProductFacadeInterface
+     * @var \Spryker\Zed\Product\Business\ProductFacadeInterface
      */
     protected $productFacade;
 
     /**
      * @param \Spryker\Zed\Product\Business\ProductFacadeInterface $productFacade
      */
-    public function __construct(ProductFacadeInterface $productFacade)
+    public function __construct($productFacade)
     {
         $this->productFacade = $productFacade;
     }

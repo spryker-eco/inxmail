@@ -13,7 +13,6 @@ use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\ProductAbstractTransfer;
-use Generated\Shared\Transfer\ProductImageTransfer;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Shared\Shipment\ShipmentConstants;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface;
@@ -91,7 +90,9 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      */
     protected function getPayload(OrderTransfer $orderTransfer): array
     {
-        $locale = $orderTransfer->getCustomer()->getLocale() ? $orderTransfer->getCustomer()->getLocale()->getLocaleName() : '';
+        $locale = $orderTransfer->getCustomer()->getLocale() ?
+            $orderTransfer->getCustomer()->getLocale()->getLocaleName() :
+            $this->localeFacadeBridge->getCurrentLocaleName();
 
         $payload = [
             'Customer' => [
@@ -140,7 +141,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
             'Shop' => [
                 'ShopLocale' => $this->localeFacadeBridge->getCurrentLocaleName(),
                 'ShopUrl' => $this->config->getStoreBaseUrl(),
-            ]
+            ],
         ];
 
         foreach ($orderTransfer->getItems() as $item) {
@@ -175,7 +176,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     protected function getItemImageLink(ArrayObject $images): string
     {
         /**
-         * @var ProductImageTransfer $image
+         * @var \Generated\Shared\Transfer\ProductImageTransfer $image
          */
         foreach ($images as $image) {
             return $image->getExternalUrlSmall();
@@ -203,7 +204,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'DeliveryService' => $method->getCarrierName(),
                 'DeliveryCosts' => $this->getDeliveryCosts($expenses),
                 'ShippingDate' => $this->dateTimeService->formatDateTime((new DateTime())::createFromFormat('U', $method->getDeliveryTime())),
-                'MultiDelivery' => false,
+                'MultiDelivery' => "No",
             ];
         }
 

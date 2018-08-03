@@ -121,7 +121,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new CustomerRegistrationMapper(
             $this->getConfig(),
-            $this->createLocaleFacade()
+            $this->getLocaleFacade()
         );
     }
 
@@ -132,7 +132,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new CustomerResetPasswordMapper(
             $this->getConfig(),
-            $this->createLocaleFacade()
+            $this->getLocaleFacade()
         );
     }
 
@@ -146,7 +146,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
             $this->createUtilDateTimeService(),
             $this->getMoneyFacade(),
             $this->getProductFacade(),
-            $this->createLocaleFacade()
+            $this->getLocaleFacade()
         );
     }
 
@@ -160,7 +160,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
             $this->createUtilDateTimeService(),
             $this->getMoneyFacade(),
             $this->getProductFacade(),
-            $this->createLocaleFacade()
+            $this->getLocaleFacade()
         );
     }
 
@@ -174,7 +174,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
             $this->createUtilDateTimeService(),
             $this->getMoneyFacade(),
             $this->getProductFacade(),
-            $this->createLocaleFacade()
+            $this->getLocaleFacade()
         );
     }
 
@@ -188,7 +188,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
             $this->createUtilDateTimeService(),
             $this->getMoneyFacade(),
             $this->getProductFacade(),
-            $this->createLocaleFacade()
+            $this->getLocaleFacade()
         );
     }
 
@@ -227,7 +227,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface
      */
-    public function createLocaleFacade(): InxmailToLocaleFacadeInterface
+    public function getLocaleFacade(): InxmailToLocaleFacadeInterface
     {
         return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_LOCALE);
     }
