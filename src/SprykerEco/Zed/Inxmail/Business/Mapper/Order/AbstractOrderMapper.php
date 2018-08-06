@@ -152,13 +152,13 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Sku' => $item->getSku(),
                 'Image' => $this->getItemImageLink($item->getImages()),
                 'DeepLink' => $this->getDeepLink($item, $locale),
-                'Price' => $this->getFormattedPriceFromInt($item->getUnitGrossPrice()),
+                'Price' => $this->getFormattedPriceFromInt($item->getRefundableAmount()),
                 'Quantity' => $item->getQuantity(),
-                'Sum' => $this->getFormattedPriceFromInt($item->getSumGrossPrice()),
-                'OriginalPrice' => $item->getOriginUnitGrossPrice() ? $this->getFormattedPriceFromInt($item->getOriginUnitGrossPrice()) : null,
-                'TaxAmount' => $this->getFormattedPriceFromInt($item->getSumGrossPrice() - $item->getSumNetPrice()),
+                'Sum' => $this->getFormattedPriceFromInt($item->getSumPriceToPayAggregation()),
+                'OriginalPrice' => $this->getFormattedPriceFromInt($item->getUnitPrice()),
+                'TaxAmount' => $this->getFormattedPriceFromInt($item->getUnitTaxAmount()),
                 'TaxRate' => $item->getTaxRate(),
-                'Discount' => $this->getFormattedPriceFromInt($item->getUnitDiscountAmountFullAggregation()),
+                'Discount' => $this->getFormattedPriceFromInt($item->getUnitDiscountAmountAggregation()),
             ];
         }
 
@@ -239,9 +239,9 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     /**
      * @param \ArrayObject $methods
      *
-     * @return int
+     * @return string
      */
-    protected function getPaymentMethodsTotal(ArrayObject $methods): int
+    protected function getPaymentMethodsTotal(ArrayObject $methods): string
     {
         $sum = 0;
 
