@@ -130,6 +130,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
             'Order' => [
                 'Number' => $orderTransfer->getIdSalesOrder(),
                 'Comment' => $orderTransfer->getCartNote(),
+                'CancelComment' => '',
                 'OrderDate' => $this->dateTimeService->formatDateTime($orderTransfer->getCreatedAt()),
                 'SubTotal' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getSubtotal()),
                 'Discount' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getDiscountTotal()),
