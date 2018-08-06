@@ -135,6 +135,8 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'Discount' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getDiscountTotal()),
                 'Tax' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getTaxTotal()->getAmount()),
                 'GrandTotal' => $this->getFormattedPriceFromInt($orderTransfer->getTotals()->getGrandTotal()),
+                'TotalDeliveryCosts' => $this->getDeliveryCosts($orderTransfer->getExpenses()),
+                'TotalPaymentCosts' => $this->getPaymentMethodsTotal($orderTransfer->getPayments()),
             ],
             'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()),
             'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods(), $orderTransfer->getExpenses()),
@@ -235,6 +237,25 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     }
 
     /**
+     * @param \ArrayObject $methods
+     *
+     * @return int
+     */
+    protected function getPaymentMethodsTotal(ArrayObject $methods): int
+    {
+        $sum = 0;
+
+        /**
+         * @var \Generated\Shared\Transfer\PaymentTransfer $method
+         */
+        foreach ($methods as $method) {
+            $sum += $method->getAmount();
+        }
+
+        return $this->getFormattedPriceFromInt($sum);
+    }
+
+    /**
      * @param int $value
      *
      * @return string
@@ -275,10 +296,9 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      */
     protected function getDeliveryCosts(ArrayObject $expenses): string
     {
-
-        foreach ($expenses as $expens) {
-            if ($expens->getType() === ShipmentConstants::SHIPMENT_EXPENSE_TYPE) {
-                return $this->getFormattedPriceFromInt($expens->getSumGrossPrice());
+        foreach ($expenses as $expense) {
+            if ($expense->getType() === ShipmentConstants::SHIPMENT_EXPENSE_TYPE) {
+                return $this->getFormattedPriceFromInt($expense->getSumGrossPrice());
             }
         }
 
