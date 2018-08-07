@@ -59,6 +59,7 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
         return [
             'Customer' => [
                 'LoginUrl' => $this->config->getStoreBaseUrl() . '/login',
+                'ResetLink' => $customerTransfer->getRestorePasswordLink(),
                 'Mail' => $customerTransfer->getEmail(),
                 'Salutation' => $customerTransfer->getSalutation(),
                 'Firstname' => $customerTransfer->getFirstName(),
