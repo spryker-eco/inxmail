@@ -19,7 +19,7 @@ abstract class AbstractAdapter implements AdapterInterface
 {
     protected const DEFAULT_TIMEOUT = 45;
     protected const DEFAULT_HEADERS = [
-        'Content-Type' => 'application/json'
+        'Content-Type' => 'application/json',
     ];
 
     /**
