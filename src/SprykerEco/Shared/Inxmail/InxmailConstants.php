@@ -11,7 +11,8 @@ interface InxmailConstants
 {
     public const KEY_ID = 'INXMAIL:KEY_ID';
     public const SECRET = 'INXMAIL:SECRET';
-    public const SPACE_ID = 'INXMAIL:SPACE_ID';
+
+    public const API_EVENT_URL = 'INXMAIL:API_EVENT_URL';
 
     public const EVENT_CUSTOMER_REGISTRATION = 'INXMAIL:EVENT_CUSTOMER_REGISTRATION';
     public const EVENT_CUSTOMER_RESET_PASSWORD = 'INXMAIL:EVENT_CUSTOMER_RESET_PASSWORD';

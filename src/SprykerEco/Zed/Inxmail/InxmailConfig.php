@@ -32,9 +32,9 @@ class InxmailConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getInxmailSpaceId(): string
+    public function getInxmailEventApiUrl(): string
     {
-        return $this->get(InxmailConstants::SPACE_ID);
+        return $this->get(InxmailConstants::API_EVENT_URL);
     }
 
     /**

@@ -18,6 +18,9 @@ use SprykerEco\Zed\Inxmail\InxmailConfig;
 abstract class AbstractAdapter implements AdapterInterface
 {
     protected const DEFAULT_TIMEOUT = 45;
+    protected const DEFAULT_HEADERS = [
+        'Content-Type' => 'application/json'
+    ];
 
     /**
      * @var \GuzzleHttp\Client
@@ -30,11 +33,9 @@ abstract class AbstractAdapter implements AdapterInterface
     protected $config;
 
     /**
-     * @param string $spaceId
-     *
      * @return string
      */
-    abstract protected function getUrl(string $spaceId): string;
+    abstract protected function getUrl(): string;
 
     /**
      * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
@@ -55,7 +56,7 @@ abstract class AbstractAdapter implements AdapterInterface
     public function sendRequest(InxmailRequestTransfer $transfer)
     {
         $options[RequestOptions::BODY] = json_encode($transfer->toArray());
-        $options[RequestOptions::HEADERS] = ['Content-Type' => 'application/json'];
+        $options[RequestOptions::HEADERS] = static::DEFAULT_HEADERS;
         $options[RequestOptions::AUTH] = [$this->config->getInxmailKeyId(), $this->config->getInxmailSecret()];
 
         return $this->send($options);
@@ -72,7 +73,7 @@ abstract class AbstractAdapter implements AdapterInterface
     {
         try {
             $response = $this->client->post(
-                $this->getUrl($this->config->getInxmailSpaceId()),
+                $this->getUrl(),
                 $options
             );
         } catch (RequestException $requestException) {

@@ -15,12 +15,12 @@ use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface;
 class CustomerEventHandler implements CustomerEventHandlerInterface
 {
     /**
-     * @var \SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerRegistrationMapper
+     * @var \SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface
      */
     protected $mapper;
 
     /**
-     * @var \SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter
+     * @var \SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface
      */
     protected $adapter;
 

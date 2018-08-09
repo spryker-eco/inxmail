@@ -4,6 +4,7 @@
  * MIT License
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
+
 namespace SprykerEco\Zed\Inxmail\Business\Handler\Order;
 
 use Generated\Shared\Transfer\InxmailRequestTransfer;
@@ -20,7 +21,7 @@ class OrderEventHandler implements OrderEventHandlerInterface
     protected $mapper;
 
     /**
-     * @var \SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter
+     * @var \SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface
      */
     protected $adapter;
 

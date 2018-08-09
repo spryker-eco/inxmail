@@ -10,12 +10,10 @@ namespace SprykerEco\Zed\Inxmail\Business\Api\Adapter;
 class EventAdapter extends AbstractAdapter
 {
     /**
-     * @param string $spaceId
-     *
      * @return string
      */
-    protected function getUrl(string $spaceId): string
+    protected function getUrl(): string
     {
-        return 'https://' . $spaceId . '.api.inxmail-commerce.com/api-service/v1/events';
+        return $this->config->getInxmailEventApiUrl();
     }
 }

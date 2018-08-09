@@ -35,37 +35,37 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     /**
      * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface
      */
-    protected $moneyFacadeBridge;
+    protected $moneyFacade;
 
     /**
      * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface
      */
-    protected $productFacadeBridge;
+    protected $productFacade;
 
     /**
      * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface
      */
-    protected $localeFacadeBridge;
+    protected $localeFacade;
 
     /**
      * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $dateTimeService
-     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge
-     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface $productFacadeBridge
-     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface $localeFacadeBridge
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface $moneyFacade
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface $productFacade
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface $localeFacade
      */
     public function __construct(
         InxmailConfig $config,
         UtilDateTimeServiceInterface $dateTimeService,
-        InxmailToMoneyFacadeBridgeInterface $moneyFacadeBridge,
-        InxmailToProductFacadeBridgeInterface $productFacadeBridge,
-        InxmailToLocaleFacadeInterface $localeFacadeBridge
+        InxmailToMoneyFacadeBridgeInterface $moneyFacade,
+        InxmailToProductFacadeBridgeInterface $productFacade,
+        InxmailToLocaleFacadeInterface $localeFacade
     ) {
         $this->config = $config;
         $this->dateTimeService = $dateTimeService;
-        $this->moneyFacadeBridge = $moneyFacadeBridge;
-        $this->productFacadeBridge = $productFacadeBridge;
-        $this->localeFacadeBridge = $localeFacadeBridge;
+        $this->moneyFacade = $moneyFacade;
+        $this->productFacade = $productFacade;
+        $this->localeFacade = $localeFacade;
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     {
         $locale = $orderTransfer->getCustomer()->getLocale() ?
             $orderTransfer->getCustomer()->getLocale()->getLocaleName() :
-            $this->localeFacadeBridge->getCurrentLocaleName();
+            $this->localeFacade->getCurrentLocaleName();
 
         $payload = [
             'Customer' => [
@@ -142,7 +142,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
             'Payment' => $this->getPaymentMethodInfo($orderTransfer->getPayments()),
             'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods(), $orderTransfer->getExpenses()),
             'Shop' => [
-                'ShopLocale' => $this->localeFacadeBridge->getCurrentLocaleName(),
+                'ShopLocale' => $this->localeFacade->getCurrentLocaleName(),
                 'ShopUrl' => $this->config->getStoreBaseUrl(),
             ],
         ];
@@ -263,9 +263,9 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
      */
     protected function getFormattedPriceFromInt(int $value): string
     {
-        $moneyTransfer = $this->moneyFacadeBridge->fromInteger($value);
+        $moneyTransfer = $this->moneyFacade->fromInteger($value);
 
-        return $this->moneyFacadeBridge->formatWithSymbol($moneyTransfer);
+        return $this->moneyFacade->formatWithSymbol($moneyTransfer);
     }
 
     /**
@@ -280,7 +280,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
         $transfer->setIdProductAbstract($itemTransfer->getIdProductAbstract());
         $transfer->setSku($itemTransfer->getSku());
 
-        $urls = $this->productFacadeBridge->getProductUrl($transfer)->getUrls();
+        $urls = $this->productFacade->getProductUrl($transfer)->getUrls();
         foreach ($urls as $url) {
             if ($url->getLocale() === $locale) {
                 return $url->getUrl();
