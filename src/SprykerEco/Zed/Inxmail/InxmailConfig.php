@@ -88,8 +88,8 @@ class InxmailConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getStoreBaseUrl(): string
+    public function getHostYves(): string
     {
-        return $this->get(ApplicationConstants::BASE_URL_YVES);
+        return $this->get(ApplicationConstants::HOST_YVES);
     }
 }
