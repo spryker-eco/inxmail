@@ -14,6 +14,8 @@ use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractCustomerMapper implements CustomerMapperInterface
 {
+    protected const LOGIN_URL = '/login';
+
     /**
      * @var \SprykerEco\Zed\Inxmail\InxmailConfig
      */
@@ -58,7 +60,7 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
     {
         return [
             'Customer' => [
-                'LoginUrl' => $this->config->getStoreBaseUrl() . '/login',
+                'LoginUrl' => $this->config->getStoreBaseUrl() . static::LOGIN_URL,
                 'ResetLink' => $customerTransfer->getRestorePasswordLink(),
                 'Mail' => $customerTransfer->getEmail(),
                 'Salutation' => $customerTransfer->getSalutation(),

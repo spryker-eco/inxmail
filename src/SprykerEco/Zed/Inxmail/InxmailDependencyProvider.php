@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Inxmail;
 
+use Spryker\Service\UtilDateTime\UtilDateTimeService;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeBridge;
@@ -21,6 +22,8 @@ class InxmailDependencyProvider extends AbstractBundleDependencyProvider
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
     public const FACADE_LOCALE = 'FACADE_LOCALE';
 
+    public const UTIL_DATE_TIME_SERVICE = 'UTIL_DATE_TIME_SERVICE';
+
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
@@ -32,6 +35,7 @@ class InxmailDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addFacadeMoney($container);
         $container = $this->addFacadeProduct($container);
         $container = $this->addFacadeLocale($container);
+        $container = $this->addUtilDateTimeService($container);
 
         return $container;
     }
@@ -87,6 +91,20 @@ class InxmailDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container[static::FACADE_LOCALE] = function (Container $container) {
             return new InxmailToLocaleFacadeBridge($container->getLocator()->locale()->facade());
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addUtilDateTimeService(Container $container): Container
+    {
+        $container[static::UTIL_DATE_TIME_SERVICE] = function () {
+            return new UtilDateTimeService();
         };
 
         return $container;

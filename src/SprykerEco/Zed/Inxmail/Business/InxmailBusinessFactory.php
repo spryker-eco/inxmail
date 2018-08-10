@@ -221,7 +221,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createUtilDateTimeService(): UtilDateTimeServiceInterface
     {
-        return new UtilDateTimeService();
+        return $this->getProvidedDependency(InxmailDependencyProvider::UTIL_DATE_TIME_SERVICE);
     }
 
     /**
