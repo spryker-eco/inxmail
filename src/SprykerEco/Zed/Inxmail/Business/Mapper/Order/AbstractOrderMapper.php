@@ -77,7 +77,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     {
         $inxmailRequestTransfer = new InxmailRequestTransfer();
         $inxmailRequestTransfer->setEvent($this->getEvent());
-        $inxmailRequestTransfer->setTransactionId(uniqid('order_'));
+        $inxmailRequestTransfer->setTransactionId($orderTransfer->getOrderReference());
         $inxmailRequestTransfer->setPayload($this->getPayload($orderTransfer));
 
         return $inxmailRequestTransfer;
