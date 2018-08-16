@@ -283,11 +283,11 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
         $urls = $this->productFacade->getProductUrl($transfer)->getUrls();
         foreach ($urls as $url) {
             if ($url->getLocale() === $locale) {
-                return $url->getUrl();
+                return $this->config->getStoreBaseUrl() . $url->getUrl();
             }
         }
 
-        return $urls->offsetGet(0)->getUrl();
+        return $this->config->getStoreBaseUrl() . $urls->offsetGet(0)->getUrl();
     }
 
     /**
