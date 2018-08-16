@@ -22,6 +22,10 @@ abstract class AbstractAdapter implements AdapterInterface
         'Content-Type' => 'application/json',
     ];
 
+    protected const API_KEY_EVENT = 'event';
+    protected const API_KEY_PAYLOAD = 'payload';
+    protected const API_KEY_TRANSACTION_ID = 'transactionId';
+
     /**
      * @var \GuzzleHttp\Client
      */
@@ -55,7 +59,12 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     public function sendRequest(InxmailRequestTransfer $transfer)
     {
-        $options[RequestOptions::BODY] = json_encode($transfer->toArray());
+        $options[RequestOptions::BODY] = json_encode([
+            static::API_KEY_EVENT => $transfer->getEvent(),
+            static::API_KEY_TRANSACTION_ID => $transfer->getEvent(),
+            static::API_KEY_PAYLOAD => $transfer->getPayload(),
+        ]);
+
         $options[RequestOptions::HEADERS] = static::DEFAULT_HEADERS;
         $options[RequestOptions::AUTH] = [$this->config->getInxmailKeyId(), $this->config->getInxmailSecret()];
 
