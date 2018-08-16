@@ -60,7 +60,7 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
     {
         return [
             'Customer' => [
-                'LoginUrl' => $this->config->getStoreBaseUrl() . static::LOGIN_URL,
+                'LoginUrl' => $this->config->getHostYves() . static::LOGIN_URL,
                 'ResetLink' => $customerTransfer->getRestorePasswordLink(),
                 'Mail' => $customerTransfer->getEmail(),
                 'Salutation' => $customerTransfer->getSalutation(),
@@ -71,7 +71,7 @@ abstract class AbstractCustomerMapper implements CustomerMapperInterface
             ],
             'Shop' => [
                 'ShopLocale' => $this->localeFacade->getCurrentLocaleName(),
-                'ShopUrl' => $this->config->getStoreBaseUrl(),
+                'ShopUrl' => $this->config->getHostYves(),
             ],
         ];
     }

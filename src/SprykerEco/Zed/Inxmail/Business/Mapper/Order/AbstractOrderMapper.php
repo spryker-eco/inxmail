@@ -143,7 +143,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
             'Delivery' => $this->getOrderDeliveryInfo($orderTransfer->getShipmentMethods(), $orderTransfer->getExpenses()),
             'Shop' => [
                 'ShopLocale' => $this->localeFacade->getCurrentLocaleName(),
-                'ShopUrl' => $this->config->getStoreBaseUrl(),
+                'ShopUrl' => $this->config->getHostYves(),
             ],
         ];
 

@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\Inxmail\Business;
 
-use Spryker\Service\UtilDateTime\UtilDateTimeService;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
@@ -143,7 +142,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new NewOrderMapper(
             $this->getConfig(),
-            $this->createUtilDateTimeService(),
+            $this->getUtilDateTimeService(),
             $this->getMoneyFacade(),
             $this->getProductFacade(),
             $this->getLocaleFacade()
@@ -157,7 +156,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new OrderCanceledMapper(
             $this->getConfig(),
-            $this->createUtilDateTimeService(),
+            $this->getUtilDateTimeService(),
             $this->getMoneyFacade(),
             $this->getProductFacade(),
             $this->getLocaleFacade()
@@ -171,7 +170,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new PaymentNotReceivedMapper(
             $this->getConfig(),
-            $this->createUtilDateTimeService(),
+            $this->getUtilDateTimeService(),
             $this->getMoneyFacade(),
             $this->getProductFacade(),
             $this->getLocaleFacade()
@@ -185,7 +184,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     {
         return new ShippingConfirmationMapper(
             $this->getConfig(),
-            $this->createUtilDateTimeService(),
+            $this->getUtilDateTimeService(),
             $this->getMoneyFacade(),
             $this->getProductFacade(),
             $this->getLocaleFacade()
@@ -219,7 +218,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface
      */
-    public function createUtilDateTimeService(): UtilDateTimeServiceInterface
+    public function getUtilDateTimeService(): UtilDateTimeServiceInterface
     {
         return $this->getProvidedDependency(InxmailDependencyProvider::UTIL_DATE_TIME_SERVICE);
     }
