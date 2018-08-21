@@ -61,7 +61,7 @@ abstract class AbstractAdapter implements AdapterInterface
     {
         $options[RequestOptions::BODY] = json_encode([
             static::API_KEY_EVENT => $transfer->getEvent(),
-            static::API_KEY_TRANSACTION_ID => $transfer->getEvent(),
+            static::API_KEY_TRANSACTION_ID => $transfer->getTransactionId(),
             static::API_KEY_PAYLOAD => $transfer->getPayload(),
         ]);
 
