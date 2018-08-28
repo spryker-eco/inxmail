@@ -2,9 +2,8 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
-
 namespace SprykerEco\Zed\Inxmail\Business\Mapper\Order;
 
 use ArrayObject;
@@ -215,7 +214,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     }
 
     /**
-     * @param \ArrayObject $methods
+     * @param \ArrayObject|\Generated\Shared\Transfer\PaymentTransfer $methods
      *
      * @return array
      */
@@ -223,9 +222,6 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     {
         $result = [];
 
-        /**
-         * @var \Generated\Shared\Transfer\PaymentTransfer $method
-         */
         foreach ($methods as $method) {
             $result[] = [
                 'PaymentMethod' => $method->getPaymentMethod(),
