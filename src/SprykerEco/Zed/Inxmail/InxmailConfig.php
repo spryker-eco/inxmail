@@ -2,9 +2,8 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
-
 namespace SprykerEco\Zed\Inxmail;
 
 use Spryker\Shared\Application\ApplicationConstants;
@@ -74,7 +73,7 @@ class InxmailConfig extends AbstractBundleConfig
      */
     public function getInxmailEventOrderCanceled(): string
     {
-        return $this->get(InxmailConstants::EVENT_ORDER_CANCELED);
+        return $this->get(InxmailConstants::EVENT_ORDER_CANCELLED);
     }
 
     /**
