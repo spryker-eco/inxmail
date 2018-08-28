@@ -215,7 +215,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     }
 
     /**
-     * @param \ArrayObject|\Generated\Shared\Transfer\PaymentTransfer $methods
+     * @param \ArrayObject $methods
      *
      * @return array
      */
