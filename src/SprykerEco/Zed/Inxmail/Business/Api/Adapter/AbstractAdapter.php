@@ -13,6 +13,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\StreamInterface;
 use SprykerEco\Zed\Inxmail\Business\Exception\InxmailApiHttpRequestException;
+use SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilEncodingServiceInterface;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractAdapter implements AdapterInterface
@@ -37,16 +38,23 @@ abstract class AbstractAdapter implements AdapterInterface
     protected $config;
 
     /**
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilEncodingServiceInterface
+     */
+    protected $utilEncodingService;
+
+    /**
      * @return string
      */
     abstract protected function getUrl(): string;
 
     /**
      * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilEncodingServiceInterface $utilEncodingService
      */
-    public function __construct(InxmailConfig $config)
+    public function __construct(InxmailConfig $config, InxmailToUtilEncodingServiceInterface $utilEncodingService)
     {
         $this->config = $config;
+        $this->utilEncodingService = $utilEncodingService;
         $this->client = new Client([
             RequestOptions::TIMEOUT => static::DEFAULT_TIMEOUT,
         ]);
@@ -55,11 +63,11 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * @param \Generated\Shared\Transfer\InxmailRequestTransfer $transfer
      *
-     * @return mixed
+     * @return \Psr\Http\Message\StreamInterface
      */
-    public function sendRequest(InxmailRequestTransfer $transfer)
+    public function sendRequest(InxmailRequestTransfer $transfer): StreamInterface
     {
-        $options[RequestOptions::BODY] = json_encode([
+        $options[RequestOptions::BODY] = $this->utilEncodingService->encodeJson([
             static::API_KEY_EVENT => $transfer->getEvent(),
             static::API_KEY_TRANSACTION_ID => $transfer->getTransactionId(),
             static::API_KEY_PAYLOAD => $transfer->getPayload(),

@@ -7,6 +7,9 @@
 
 namespace SprykerEco\Shared\Inxmail;
 
+/**
+ * Declares global environment configuration keys. Do not use it for other class constants.
+ */
 interface InxmailConstants
 {
     public const KEY_ID = 'INXMAIL:KEY_ID';

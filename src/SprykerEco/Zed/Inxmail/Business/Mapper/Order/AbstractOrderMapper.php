@@ -13,11 +13,11 @@ use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\ProductAbstractTransfer;
-use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Shared\Shipment\ShipmentConstants;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface;
-use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface;
-use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilDateTimeServiceInterface;
 use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractOrderMapper implements OrderMapperInterface
@@ -28,17 +28,17 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     protected $config;
 
     /**
-     * @var \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilDateTimeServiceInterface
      */
     protected $dateTimeService;
 
     /**
-     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeInterface
      */
     protected $moneyFacade;
 
     /**
-     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface
+     * @var \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeInterface
      */
     protected $productFacade;
 
@@ -49,16 +49,16 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
 
     /**
      * @param \SprykerEco\Zed\Inxmail\InxmailConfig $config
-     * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $dateTimeService
-     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface $moneyFacade
-     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface $productFacade
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilDateTimeServiceInterface $dateTimeService
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeInterface $moneyFacade
+     * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeInterface $productFacade
      * @param \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface $localeFacade
      */
     public function __construct(
         InxmailConfig $config,
-        UtilDateTimeServiceInterface $dateTimeService,
-        InxmailToMoneyFacadeBridgeInterface $moneyFacade,
-        InxmailToProductFacadeBridgeInterface $productFacade,
+        InxmailToUtilDateTimeServiceInterface $dateTimeService,
+        InxmailToMoneyFacadeInterface $moneyFacade,
+        InxmailToProductFacadeInterface $productFacade,
         InxmailToLocaleFacadeInterface $localeFacade
     ) {
         $this->config = $config;

@@ -14,7 +14,7 @@ interface CustomerEventHandlerInterface
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return string
+     * @return void
      */
-    public function handle(CustomerTransfer $customerTransfer): string;
+    public function handle(CustomerTransfer $customerTransfer): void;
 }

@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Inxmail\Dependency\Facade;
 
 use Generated\Shared\Transfer\MoneyTransfer;
 
-class InxmailToMoneyFacadeBridge implements InxmailToMoneyFacadeBridgeInterface
+class InxmailToMoneyFacadeBridge implements InxmailToMoneyFacadeInterface
 {
     /**
      * @var \Spryker\Zed\Money\Business\MoneyFacadeInterface

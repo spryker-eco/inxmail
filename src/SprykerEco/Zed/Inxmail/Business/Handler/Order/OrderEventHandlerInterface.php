@@ -12,7 +12,7 @@ interface OrderEventHandlerInterface
     /**
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handle(int $idSalesOrder): string;
+    public function handle(int $idSalesOrder): void;
 }

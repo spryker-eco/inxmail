@@ -20,9 +20,9 @@ interface InxmailFacadeInterface
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return string
+     * @return void
      */
-    public function handleCustomerRegistrationEvent(CustomerTransfer $customerTransfer): string;
+    public function handleCustomerRegistrationEvent(CustomerTransfer $customerTransfer): void;
 
     /**
      * Specification:
@@ -33,9 +33,9 @@ interface InxmailFacadeInterface
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return string
+     * @return void
      */
-    public function handleCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): string;
+    public function handleCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): void;
 
     /**
      * Specification:
@@ -45,9 +45,9 @@ interface InxmailFacadeInterface
      *
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handleNewOrderEvent(int $idSalesOrder): string;
+    public function handleNewOrderEvent(int $idSalesOrder): void;
 
     /**
      * Specification:
@@ -57,9 +57,9 @@ interface InxmailFacadeInterface
      *
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handleOrderCanceledEvent(int $idSalesOrder): string;
+    public function handleOrderCanceledEvent(int $idSalesOrder): void;
 
     /**
      * Specification:
@@ -69,9 +69,9 @@ interface InxmailFacadeInterface
      *
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handlePaymentNotReceivedEvent(int $idSalesOrder): string;
+    public function handlePaymentNotReceivedEvent(int $idSalesOrder): void;
 
     /**
      * Specification:
@@ -81,7 +81,7 @@ interface InxmailFacadeInterface
      *
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handleShippingConfirmationEvent(int $idSalesOrder): string;
+    public function handleShippingConfirmationEvent(int $idSalesOrder): void;
 }

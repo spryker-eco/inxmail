@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Inxmail\Dependency\Facade;
 
 use Generated\Shared\Transfer\OrderTransfer;
 
-class InxmailToSalesFacadeBridge implements InxmailToSalesFacadeBridgeInterface
+class InxmailToSalesFacadeBridge implements InxmailToSalesFacadeInterface
 {
     /**
      * @var \Spryker\Zed\Sales\Business\SalesFacadeInterface

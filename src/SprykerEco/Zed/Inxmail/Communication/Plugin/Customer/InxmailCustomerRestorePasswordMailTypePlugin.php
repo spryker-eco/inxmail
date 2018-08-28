@@ -22,7 +22,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return static::MAIL_TYPE;
     }
@@ -32,7 +32,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return void
      */
-    public function build(MailBuilderInterface $mailBuilder)
+    public function build(MailBuilderInterface $mailBuilder): void
     {
         $this
             ->setSubject($mailBuilder)
@@ -49,7 +49,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setSubject(MailBuilderInterface $mailBuilder)
+    protected function setSubject(MailBuilderInterface $mailBuilder): MailTypePluginInterface
     {
         $mailBuilder->setSubject('mail.customer.restore_password.subject');
 
@@ -61,7 +61,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setHtmlTemplate(MailBuilderInterface $mailBuilder)
+    protected function setHtmlTemplate(MailBuilderInterface $mailBuilder): MailTypePluginInterface
     {
         $mailBuilder->setHtmlTemplate('customer/mail/customer_restore_password.html.twig');
 
@@ -73,7 +73,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setTextTemplate(MailBuilderInterface $mailBuilder)
+    protected function setTextTemplate(MailBuilderInterface $mailBuilder): MailTypePluginInterface
     {
         $mailBuilder->setTextTemplate('customer/mail/customer_restore_password.text.twig');
 
@@ -85,7 +85,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setRecipient(MailBuilderInterface $mailBuilder)
+    protected function setRecipient(MailBuilderInterface $mailBuilder): MailTypePluginInterface
     {
         $customerTransfer = $mailBuilder->getMailTransfer()->requireCustomer()->getCustomer();
 
@@ -102,7 +102,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setSender(MailBuilderInterface $mailBuilder)
+    protected function setSender(MailBuilderInterface $mailBuilder): MailTypePluginInterface
     {
         $mailBuilder->setSender('mail.sender.email', 'mail.sender.name');
 

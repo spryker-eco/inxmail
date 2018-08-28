@@ -10,7 +10,7 @@ namespace SprykerEco\Zed\Inxmail\Dependency\Facade;
 use Generated\Shared\Transfer\ProductAbstractTransfer;
 use Generated\Shared\Transfer\ProductUrlTransfer;
 
-interface InxmailToProductFacadeBridgeInterface
+interface InxmailToProductFacadeInterface
 {
     /**
      * @param \Generated\Shared\Transfer\ProductAbstractTransfer $productAbstractTransfer

@@ -8,13 +8,14 @@
 namespace SprykerEco\Zed\Inxmail\Business\Api\Adapter;
 
 use Generated\Shared\Transfer\InxmailRequestTransfer;
+use Psr\Http\Message\StreamInterface;
 
 interface AdapterInterface
 {
     /**
      * @param \Generated\Shared\Transfer\InxmailRequestTransfer $transfer
      *
-     * @return string
+     * @return \Psr\Http\Message\StreamInterface
      */
-    public function sendRequest(InxmailRequestTransfer $transfer);
+    public function sendRequest(InxmailRequestTransfer $transfer): StreamInterface;
 }

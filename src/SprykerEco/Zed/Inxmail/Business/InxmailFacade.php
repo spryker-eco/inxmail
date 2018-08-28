@@ -20,11 +20,11 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return string
+     * @return void
      */
-    public function handleCustomerRegistrationEvent(CustomerTransfer $customerTransfer): string
+    public function handleCustomerRegistrationEvent(CustomerTransfer $customerTransfer): void
     {
-        return $this->getFactory()
+        $this->getFactory()
             ->createCustomerRegistrationEventHandler()
             ->handle($customerTransfer);
     }
@@ -34,11 +34,11 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return string
+     * @return void
      */
-    public function handleCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): string
+    public function handleCustomerResetPasswordEvent(CustomerTransfer $customerTransfer): void
     {
-        return $this->getFactory()
+        $this->getFactory()
             ->createCustomerResetPasswordEventHandler()
             ->handle($customerTransfer);
     }
@@ -48,11 +48,11 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      *
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handleNewOrderEvent(int $idSalesOrder): string
+    public function handleNewOrderEvent(int $idSalesOrder): void
     {
-        return $this->getFactory()
+        $this->getFactory()
             ->createNewOrderEventHandler()
             ->handle($idSalesOrder);
     }
@@ -62,11 +62,11 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      *
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handleOrderCanceledEvent(int $idSalesOrder): string
+    public function handleOrderCanceledEvent(int $idSalesOrder): void
     {
-        return $this->getFactory()
+        $this->getFactory()
             ->createOrderCanceledEventHandler()
             ->handle($idSalesOrder);
     }
@@ -76,11 +76,11 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      *
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handlePaymentNotReceivedEvent(int $idSalesOrder): string
+    public function handlePaymentNotReceivedEvent(int $idSalesOrder): void
     {
-        return $this->getFactory()
+        $this->getFactory()
             ->createPaymentNotReceivedEventHandler()
             ->handle($idSalesOrder);
     }
@@ -90,11 +90,11 @@ class InxmailFacade extends AbstractFacade implements InxmailFacadeInterface
      *
      * @param int $idSalesOrder
      *
-     * @return string
+     * @return void
      */
-    public function handleShippingConfirmationEvent(int $idSalesOrder): string
+    public function handleShippingConfirmationEvent(int $idSalesOrder): void
     {
-        return $this->getFactory()
+        $this->getFactory()
             ->createShippingConfirmationEventHandler()
             ->handle($idSalesOrder);
     }

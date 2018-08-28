@@ -11,6 +11,8 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use GuzzleHttp\Psr7\Stream;
+use Psr\Http\Message\StreamInterface;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandler;
 use SprykerEco\Zed\Inxmail\Business\Handler\Customer\CustomerEventHandlerInterface;
@@ -21,7 +23,7 @@ use SprykerEco\Zed\Inxmail\Business\InxmailFacade;
 use SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface;
-use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeInterface;
 
 /**
  * @group SprykerEcoTest
@@ -37,7 +39,7 @@ class InxmailTest extends Unit
     public function testHandleCustomerRegisterEvent()
     {
         $facade = $this->prepareFacade();
-        $this->assertTrue((bool)$facade->handleCustomerRegistrationEvent($this->prepareCustomerTransfer()));
+        $this->assertEmpty($facade->handleCustomerRegistrationEvent($this->prepareCustomerTransfer()));
     }
 
     /**
@@ -46,7 +48,7 @@ class InxmailTest extends Unit
     public function testHandleCustomerResetPasswordEvent()
     {
         $facade = $this->prepareFacade();
-        $this->assertTrue((bool)$facade->handleCustomerResetPasswordEvent($this->prepareCustomerTransfer()));
+        $this->assertEmpty($facade->handleCustomerResetPasswordEvent($this->prepareCustomerTransfer()));
     }
 
     /**
@@ -55,7 +57,7 @@ class InxmailTest extends Unit
     public function testHandleOrderCreatedEvent()
     {
         $facade = $this->prepareFacade();
-        $this->assertTrue((bool)$facade->handleNewOrderEvent(1));
+        $this->assertEmpty($facade->handleNewOrderEvent(1));
     }
 
     /**
@@ -64,7 +66,7 @@ class InxmailTest extends Unit
     public function testHandleOrderCanceledEvent()
     {
         $facade = $this->prepareFacade();
-        $this->assertTrue((bool)$facade->handleOrderCanceledEvent(1));
+        $this->assertEmpty($facade->handleOrderCanceledEvent(1));
     }
 
     /**
@@ -73,7 +75,7 @@ class InxmailTest extends Unit
     public function testHandleShippingConfirmationEvent()
     {
         $facade = $this->prepareFacade();
-        $this->assertTrue((bool)$facade->handleShippingConfirmationEvent(1));
+        $this->assertEmpty($facade->handleShippingConfirmationEvent(1));
     }
 
     /**
@@ -82,7 +84,7 @@ class InxmailTest extends Unit
     public function testHandlePaymentNotReceivedEvent()
     {
         $facade = $this->prepareFacade();
-        $this->assertTrue((bool)$facade->handlePaymentNotReceivedEvent(1));
+        $this->assertEmpty($facade->handlePaymentNotReceivedEvent(1));
     }
 
     /**
@@ -150,7 +152,7 @@ class InxmailTest extends Unit
             ->setMethods(['send'])
             ->getMock();
 
-        $handler->method('send')->willReturn(true);
+        $handler->method('send')->willReturn($this->createStreamInterfaceMock());
 
         return $handler;
     }
@@ -167,7 +169,7 @@ class InxmailTest extends Unit
             ->setMethods(['send'])
             ->getMock();
 
-        $handler->method('send')->willReturn(true);
+        $handler->method('send')->willReturn($this->createStreamInterfaceMock());
 
         return $handler;
     }
@@ -214,16 +216,28 @@ class InxmailTest extends Unit
     }
 
     /**
-     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeInterface
      */
-    protected function createSalesFacadeMock(): InxmailToSalesFacadeBridgeInterface
+    protected function createSalesFacadeMock(): InxmailToSalesFacadeInterface
     {
-        $facade = $this->getMockBuilder(InxmailToSalesFacadeBridgeInterface::class)
+        $facade = $this->getMockBuilder(InxmailToSalesFacadeInterface::class)
             ->setMethods(['getOrderByIdSalesOrder'])
             ->getMock();
 
         $facade->method('getOrderByIdSalesOrder')->willReturn(new OrderTransfer());
 
         return $facade;
+    }
+
+    /**
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    protected function createStreamInterfaceMock(): StreamInterface
+    {
+        $stream = $this->getMockBuilder(StreamInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $stream;
     }
 }

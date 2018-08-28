@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Inxmail\Business\Handler\Customer;
 
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\InxmailRequestTransfer;
+use Psr\Http\Message\StreamInterface;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Customer\CustomerMapperInterface;
 
@@ -37,13 +38,12 @@ class CustomerEventHandler implements CustomerEventHandlerInterface
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return string
+     * @return void
      */
-    public function handle(CustomerTransfer $customerTransfer): string
+    public function handle(CustomerTransfer $customerTransfer): void
     {
         $transfer = $this->map($customerTransfer);
-
-        return $this->send($transfer);
+        $this->send($transfer);
     }
 
     /**
@@ -59,9 +59,9 @@ class CustomerEventHandler implements CustomerEventHandlerInterface
     /**
      * @param \Generated\Shared\Transfer\InxmailRequestTransfer $inxmailRequestTransfer
      *
-     * @return string
+     * @return \Psr\Http\Message\StreamInterface
      */
-    protected function send(InxmailRequestTransfer $inxmailRequestTransfer): string
+    protected function send(InxmailRequestTransfer $inxmailRequestTransfer): StreamInterface
     {
         return $this->adapter->sendRequest($inxmailRequestTransfer);
     }

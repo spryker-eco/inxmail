@@ -26,7 +26,7 @@ class InxmailNewOrderPlugin extends AbstractCommand implements CommandByOrderInt
      *
      * @return void
      */
-    public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
+    public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): void
     {
         $this->getFacade()->handleNewOrderEvent($orderEntity->getIdSalesOrder());
     }

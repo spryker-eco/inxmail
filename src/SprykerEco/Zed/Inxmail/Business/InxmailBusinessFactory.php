@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\Inxmail\Business;
 
-use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Inxmail\Business\Api\Adapter\EventAdapter;
@@ -24,9 +23,11 @@ use SprykerEco\Zed\Inxmail\Business\Mapper\Order\OrderMapperInterface;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\PaymentNotReceivedMapper;
 use SprykerEco\Zed\Inxmail\Business\Mapper\Order\ShippingConfirmationMapper;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface;
-use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface;
-use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface;
-use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilDateTimeServiceInterface;
+use SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilEncodingServiceInterface;
 use SprykerEco\Zed\Inxmail\InxmailDependencyProvider;
 
 /**
@@ -110,7 +111,7 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
      */
     public function createEventAdapter(): AdapterInterface
     {
-        return new EventAdapter($this->getConfig());
+        return new EventAdapter($this->getConfig(), $this->getUtilEncodingService());
     }
 
     /**
@@ -192,35 +193,43 @@ class InxmailBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeBridgeInterface
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToSalesFacadeInterface
      */
-    public function getSalesFacade(): InxmailToSalesFacadeBridgeInterface
+    public function getSalesFacade(): InxmailToSalesFacadeInterface
     {
         return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_SALES);
     }
 
     /**
-     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeBridgeInterface
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeInterface
      */
-    public function getMoneyFacade(): InxmailToMoneyFacadeBridgeInterface
+    public function getMoneyFacade(): InxmailToMoneyFacadeInterface
     {
         return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_MONEY);
     }
 
     /**
-     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeBridgeInterface
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeInterface
      */
-    public function getProductFacade(): InxmailToProductFacadeBridgeInterface
+    public function getProductFacade(): InxmailToProductFacadeInterface
     {
         return $this->getProvidedDependency(InxmailDependencyProvider::FACADE_PRODUCT);
     }
 
     /**
-     * @return \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilDateTimeServiceInterface
      */
-    public function getUtilDateTimeService(): UtilDateTimeServiceInterface
+    public function getUtilDateTimeService(): InxmailToUtilDateTimeServiceInterface
     {
         return $this->getProvidedDependency(InxmailDependencyProvider::UTIL_DATE_TIME_SERVICE);
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Inxmail\Dependency\Service\InxmailToUtilEncodingServiceInterface
+     */
+    public function getUtilEncodingService(): InxmailToUtilEncodingServiceInterface
+    {
+        return $this->getProvidedDependency(InxmailDependencyProvider::UTIL_ENCODING_SERVICE);
     }
 
     /**
