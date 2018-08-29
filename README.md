@@ -10,5 +10,4 @@ composer require spryker-eco/inxmail
 ```
 
 ## Documentation
-TODO
 [Module Documentation](https://academy.spryker.com)
