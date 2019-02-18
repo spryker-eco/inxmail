@@ -1,7 +1,7 @@
 # Inxmal Module
 
 [![Build Status](https://travis-ci.org/spryker-eco/inxmail.svg?branch=master)](https://travis-ci.org/spryker-eco/inxmail)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/github/license/spryker-eco/inxmail.svg?b=master)](https://github.com/spryker-eco/inxmail)
 
 ## Installation
 
@@ -10,4 +10,10 @@ composer require spryker-eco/inxmail
 ```
 
 ## Documentation
-[Module Documentation](https://academy.spryker.com)
+
+[Documentation](https://documentation.spryker.com/industry_partners/performance/inxmail.htm)
+
+## Code checks
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/spryker-eco/inxmail/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/spryker-eco/inxmail/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/spryker-eco/inxmail/badges/build.png?b=master)](https://scrutinizer-ci.com/g/spryker-eco/inxmail/build-status/master)
