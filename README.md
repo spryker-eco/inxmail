@@ -1,4 +1,5 @@
-# Inxmal Module
+# Inxmail Module
+
 
 [![Build Status](https://travis-ci.org/spryker-eco/inxmail.svg?branch=master)](https://travis-ci.org/spryker-eco/inxmail)
 [![License](https://img.shields.io/github/license/spryker-eco/inxmail.svg?b=master)](https://github.com/spryker-eco/inxmail)
