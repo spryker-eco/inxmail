@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<transfers xmlns="http://xsd.spryker.com"
+<transfers xmlns="spryker:transfer-01"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/transfer-01.xsd">
 
@@ -10,7 +10,6 @@
     </transfer>
 
     <transfer name="Customer">
-        <property name="idCustomer" type="int"/>
         <property name="restorePasswordLink" type="string"/>
         <property name="email" type="string"/>
         <property name="salutation" type="string"/>
