@@ -4,9 +4,65 @@
            xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/transfer-01.xsd">
 
     <transfer name="InxmailRequest">
-        <property name="event" type="string" />
-        <property name="transactionId" type="string" />
-        <property name="payload" type="array" />
+        <property name="event" type="string"/>
+        <property name="transactionId" type="string"/>
+        <property name="payload" type="array" singular="payload"/>
+    </transfer>
+
+    <transfer name="Customer">
+        <property name="email" type="string"/>
+        <property name="salutation" type="string"/>
+        <property name="firstName" type="string"/>
+        <property name="lastName" type="string"/>
+        <property name="idCustomer" type="int"/>
+        <property name="locale" type="Locale"/>
+    </transfer>
+
+    <transfer name="Order">
+        <property name="orderReference" type="string"/>
+        <property name="customer" type="Customer"/>
+        <property name="billingAddress" type="Address"/>
+        <property name="shippingAddress" type="Address" deprecated="Use item level shipping addresses (item.shipment.shippingAddress) instead."/>
+        <property name="idSalesOrder" type="int"/>
+        <property name="cartNote" type="string"/>
+        <property name="createdAt" type="string"/>
+        <property name="totals" type="Totals"/>
+        <property name="expenses" type="Expense[]" singular="expense"/>
+        <property name="payments" type="Payment[]" singular="payment"/>
+        <property name="shipmentMethods" type="ShipmentMethod[]" singular="shipmentMethod" deprecated="Obsolete. Not used."/>
+        <property name="items" type="Item[]" singular="item"/>
+    </transfer>
+
+    <transfer name="ProductImage">
+        <property name="externalUrlSmall" type="string"/>
+    </transfer>
+
+    <transfer name="ShipmentMethod">
+        <property name="name" type="string"/>
+        <property name="carrierName" type="string"/>
+        <property name="deliveryTime" type="int"/>
+    </transfer>
+
+    <transfer name="Payment">
+        <property name="amount" type="int"/>
+    </transfer>
+
+    <transfer name="Item">
+        <property name="idProductAbstract" type="int"/>
+    </transfer>
+
+    <transfer name="ProductUrl">
+        <property name="urls" type="LocalizedUrl[]" singular="url"/>
+    </transfer>
+
+    <transfer name="Mail">
+        <property name="customer" type="Customer"/>
+    </transfer>
+
+    <transfer name="ProductAbstract">
+    </transfer>
+
+    <transfer name="Money">
     </transfer>
 
 </transfers>
