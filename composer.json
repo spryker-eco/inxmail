@@ -2,7 +2,7 @@
   "name": "spryker-eco/inxmail",
   "type": "library",
   "description": "Inxmail module",
-  "license": "proprietary",
+  "license": "MIT",
   "require": {
     "php": ">=7.2",
     "spryker/application": "^1.0.0 || ^2.0.0 || ^3.0.0",
@@ -14,7 +14,7 @@
     "spryker/product": "^5.0.0 || ^6.0.0",
     "spryker/sales": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0",
     "spryker/util-date-time": "^1.0.0",
-    "spryker/util-encoding": "^1.0.0"
+    "spryker/util-encoding": "^1.0.0 || ^2.0.0"
   },
   "require-dev": {
     "spryker/code-sniffer": "*",

@@ -10,6 +10,8 @@
     </transfer>
 
     <transfer name="Customer">
+        <property name="idCustomer" type="int"/>
+        <property name="restorePasswordLink" type="string"/>
         <property name="email" type="string"/>
         <property name="salutation" type="string"/>
         <property name="firstName" type="string"/>
@@ -49,6 +51,7 @@
 
     <transfer name="Item">
         <property name="idProductAbstract" type="int"/>
+        <property name="sku" type="string"/>
     </transfer>
 
     <transfer name="ProductUrl">
@@ -63,6 +66,21 @@
     </transfer>
 
     <transfer name="Money">
+    </transfer>
+
+    <transfer name="Locale">
+    </transfer>
+
+    <transfer name="Address">
+    </transfer>
+
+    <transfer name="Totals">
+    </transfer>
+
+    <transfer name="Expense">
+    </transfer>
+
+    <transfer name="LocalizedUrl">
     </transfer>
 
 </transfers>
