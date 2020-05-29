@@ -7,14 +7,12 @@
 
 namespace SprykerEco\Zed\Inxmail\Dependency\Facade;
 
-use Generated\Shared\Transfer\OrderTransfer;
-
 interface InxmailToSalesFacadeInterface
 {
     /**
-     * @param int $idOrder
+     * @param int $idSalesOrder
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function getOrderByIdSalesOrder(int $idOrder): OrderTransfer;
+    public function getOrderByIdSalesOrder($idSalesOrder);
 }

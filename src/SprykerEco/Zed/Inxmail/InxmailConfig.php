@@ -14,6 +14,8 @@ use SprykerEco\Shared\Inxmail\InxmailConstants;
 class InxmailConfig extends AbstractBundleConfig
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailKeyId(): string
@@ -22,6 +24,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailSecret(): string
@@ -30,6 +34,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailEventApiUrl(): string
@@ -38,6 +44,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailEventCustomerRegistration(): string
@@ -46,6 +54,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailEventCustomerResetPassword(): string
@@ -54,6 +64,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailEventOrderNew(): string
@@ -62,6 +74,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailEventOrderShippingConfirmation(): string
@@ -70,6 +84,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailEventOrderCanceled(): string
@@ -78,6 +94,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getInxmailEventOrderPaymentIsNotReceived(): string
@@ -86,6 +104,8 @@ class InxmailConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getHostYves(): string

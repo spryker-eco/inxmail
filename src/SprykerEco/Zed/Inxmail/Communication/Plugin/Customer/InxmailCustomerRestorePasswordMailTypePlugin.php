@@ -14,12 +14,20 @@ use Spryker\Zed\Mail\Dependency\Plugin\MailTypePluginInterface;
 /**
  * @method \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface getFacade()
  * @method \SprykerEco\Zed\Inxmail\Business\InxmailBusinessFactory getFactory()
+ *
+ * @SuppressWarnings(PHPMD)
+ * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
+ * @method \SprykerEco\Zed\Inxmail\Persistence\InxmailQueryContainerInterface getQueryContainer()
  */
 class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implements MailTypePluginInterface
 {
-    const MAIL_TYPE = 'customer restore password';
+    public const MAIL_TYPE = 'customer restore password';
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -28,6 +36,10 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
      * @return void
@@ -49,7 +61,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setSubject(MailBuilderInterface $mailBuilder): MailTypePluginInterface
+    protected function setSubject(MailBuilderInterface $mailBuilder)
     {
         $mailBuilder->setSubject('mail.customer.restore_password.subject');
 
@@ -61,7 +73,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setHtmlTemplate(MailBuilderInterface $mailBuilder): MailTypePluginInterface
+    protected function setHtmlTemplate(MailBuilderInterface $mailBuilder)
     {
         $mailBuilder->setHtmlTemplate('customer/mail/customer_restore_password.html.twig');
 
@@ -73,7 +85,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setTextTemplate(MailBuilderInterface $mailBuilder): MailTypePluginInterface
+    protected function setTextTemplate(MailBuilderInterface $mailBuilder)
     {
         $mailBuilder->setTextTemplate('customer/mail/customer_restore_password.text.twig');
 
@@ -85,7 +97,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setRecipient(MailBuilderInterface $mailBuilder): MailTypePluginInterface
+    protected function setRecipient(MailBuilderInterface $mailBuilder)
     {
         $customerTransfer = $mailBuilder->getMailTransfer()->requireCustomer()->getCustomer();
 
@@ -102,7 +114,7 @@ class InxmailCustomerRestorePasswordMailTypePlugin extends AbstractPlugin implem
      *
      * @return $this
      */
-    protected function setSender(MailBuilderInterface $mailBuilder): MailTypePluginInterface
+    protected function setSender(MailBuilderInterface $mailBuilder)
     {
         $mailBuilder->setSender('mail.sender.email', 'mail.sender.name');
 
