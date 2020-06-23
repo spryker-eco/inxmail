@@ -23,7 +23,7 @@
   },
   "suggest": {
     "spryker/mail": "If you want to use mail plugins.",
-    "spryker/oms": "If you want to use oms plugins."
+    "spryker/oms": "If you want to use OMS plugins."
   },
   "autoload": {
     "psr-4": {
