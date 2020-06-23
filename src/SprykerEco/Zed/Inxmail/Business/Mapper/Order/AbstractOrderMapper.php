@@ -13,7 +13,7 @@ use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\ProductAbstractTransfer;
-use Spryker\Shared\Shipment\ShipmentConstants;
+use Spryker\Shared\Shipment\ShipmentConfig;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeInterface;
@@ -295,7 +295,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     protected function getDeliveryCosts(ArrayObject $expenses): string
     {
         foreach ($expenses as $expense) {
-            if ($expense->getType() === ShipmentConstants::SHIPMENT_EXPENSE_TYPE) {
+            if ($expense->getType() === ShipmentConfig::SHIPMENT_EXPENSE_TYPE) {
                 return $this->getFormattedPriceFromInt($expense->getSumGrossPrice());
             }
         }
