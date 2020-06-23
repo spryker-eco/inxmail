@@ -13,7 +13,6 @@ use Generated\Shared\Transfer\InxmailRequestTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\ProductAbstractTransfer;
-use Spryker\Shared\Shipment\ShipmentConstants;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToLocaleFacadeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToMoneyFacadeInterface;
 use SprykerEco\Zed\Inxmail\Dependency\Facade\InxmailToProductFacadeInterface;
@@ -22,6 +21,8 @@ use SprykerEco\Zed\Inxmail\InxmailConfig;
 
 abstract class AbstractOrderMapper implements OrderMapperInterface
 {
+    protected const SHIPMENT_EXPENSE_TYPE = 'SHIPMENT_EXPENSE_TYPE';
+
     /**
      * @var \SprykerEco\Zed\Inxmail\InxmailConfig
      */
@@ -207,7 +208,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
                 'DeliveryService' => $method->getCarrierName(),
                 'DeliveryCosts' => $this->getDeliveryCosts($expenses),
                 'ShippingDate' => $this->dateTimeService->formatDateTime((new DateTime())::createFromFormat('U', $method->getDeliveryTime())),
-                'MultiDelivery' => "No",
+                'MultiDelivery' => 'No',
             ];
         }
 
@@ -295,7 +296,7 @@ abstract class AbstractOrderMapper implements OrderMapperInterface
     protected function getDeliveryCosts(ArrayObject $expenses): string
     {
         foreach ($expenses as $expense) {
-            if ($expense->getType() === ShipmentConstants::SHIPMENT_EXPENSE_TYPE) {
+            if ($expense->getType() === static::SHIPMENT_EXPENSE_TYPE) {
                 return $this->getFormattedPriceFromInt($expense->getSumGrossPrice());
             }
         }

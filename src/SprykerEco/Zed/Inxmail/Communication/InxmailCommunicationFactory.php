@@ -12,6 +12,7 @@ use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 /**
  * @method \SprykerEco\Zed\Inxmail\Persistence\InxmailQueryContainerInterface getQueryContainer()
  * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
+ * @method \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface getFacade()
  */
 class InxmailCommunicationFactory extends AbstractCommunicationFactory
 {

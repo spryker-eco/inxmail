@@ -14,10 +14,16 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 /**
  * @method \SprykerEco\Zed\Inxmail\Business\InxmailFacadeInterface getFacade()
  * @method \SprykerEco\Zed\Inxmail\Business\InxmailBusinessFactory getFactory()
+ * @method \SprykerEco\Zed\Inxmail\InxmailConfig getConfig()
+ * @method \SprykerEco\Zed\Inxmail\Persistence\InxmailQueryContainerInterface getQueryContainer()
  */
 class InxmailPostCustomerRegistrationPlugin extends AbstractPlugin implements PostCustomerRegistrationPluginInterface
 {
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return void
