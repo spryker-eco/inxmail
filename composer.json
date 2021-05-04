@@ -1,52 +1,52 @@
 {
-  "name": "spryker-eco/inxmail",
-  "type": "library",
-  "description": "Inxmail module",
-  "license": "MIT",
-  "require": {
-    "php": ">=7.2",
-    "spryker/application": "^1.0.0 || ^2.0.0 || ^3.0.0",
-    "spryker/customer-extension": "^1.0.0",
-    "spryker/guzzle": "^2.2.0",
-    "spryker/kernel": "^3.0.0",
-    "spryker/locale": "^1.0.0 || ^2.0.0 || ^3.0.0",
-    "spryker/money": "^1.0.0 || ^2.0.0",
-    "spryker/product": "^5.0.0 || ^6.0.0",
-    "spryker/sales": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0",
-    "spryker/util-date-time": "^1.0.0",
-    "spryker/util-encoding": "^1.0.0 || ^2.0.0"
-  },
-  "require-dev": {
-    "spryker/code-sniffer": "*",
-    "spryker/mail": "*",
-    "spryker/oms": "*"
-  },
-  "suggest": {
-    "spryker/mail": "If you want to use mail plugins.",
-    "spryker/oms": "If you want to use OMS plugins."
-  },
-  "autoload": {
-    "psr-4": {
-      "SprykerEco\\": "src/SprykerEco/"
+    "name": "spryker-eco/inxmail",
+    "type": "library",
+    "description": "Inxmail module",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.2",
+        "spryker/application": "^1.0.0 || ^2.0.0 || ^3.0.0",
+        "spryker/customer-extension": "^1.0.0",
+        "spryker/guzzle": "^2.2.0",
+        "spryker/kernel": "^3.0.0",
+        "spryker/locale": "^1.0.0 || ^2.0.0 || ^3.0.0",
+        "spryker/money": "^1.0.0 || ^2.0.0",
+        "spryker/product": "^5.0.0 || ^6.0.0",
+        "spryker/sales": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0",
+        "spryker/util-date-time": "^1.0.0",
+        "spryker/util-encoding": "^1.0.0 || ^2.0.0"
+    },
+    "require-dev": {
+        "spryker/code-sniffer": "*",
+        "spryker/mail": "*",
+        "spryker/oms": "*"
+    },
+    "suggest": {
+        "spryker/mail": "If you want to use mail plugins.",
+        "spryker/oms": "If you want to use OMS plugins."
+    },
+    "autoload": {
+        "psr-4": {
+            "SprykerEco\\": "src/SprykerEco/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SprykerEcoTest\\": "tests/SprykerEcoTest/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "cs-check": "phpcs -p -s --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/",
+        "cs-fix": "phpcbf -p --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "SprykerEcoTest\\": "tests/SprykerEcoTest/"
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "scripts": {
-    "cs-check": "phpcs -p -s --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/",
-    "cs-fix": "phpcbf -p --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/"
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0.x-dev"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }
